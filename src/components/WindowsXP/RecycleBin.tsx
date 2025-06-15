@@ -1,25 +1,24 @@
-Username: Admin
-Password: Bakadu36
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { FileText, Image, Folder, X, Video } from "lucide-react";
+import {
+  useRecycleBin,
+  RecycleBinItem,
+} from "../../contexts/RecycleBinContext";
 
-ATTENTION: Ne pas partager ces informations !
-Accès réservé au personnel autorisé uniquement.
+interface RecycleBinProps {
+  onClose: () => void;
+}
 
-Dernière mise à jour: 25/12/2024
-Système: Windows XP Professional`,
-    },
-  ];
-=============================
-
-Username: Admin
-Password: Bakadu36
-
-ATTENTION: Ne pas partager ces informations !
-Accès réservé au personnel autorisé uniquement.
-
-Dernière mise à jour: 25/12/2024
-Système: Windows XP Professional`,
-    },
-  ];
+const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
+  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [viewingItem, setViewingItem] = useState<RecycleBinItem | null>(null);
+  const {
+    items: recycleBinItems,
+    removeItem,
+    restoreItem,
+    clearAll,
+  } = useRecycleBin();
 
   const handleItemClick = (item: RecycleBinItem) => {
     setSelectedItem(item.id);
@@ -54,6 +53,27 @@ Système: Windows XP Professional`,
     setViewingItem({
       ...recycleBinItems.find((item) => item.content === content)!,
     });
+  };
+
+  const handleRestore = () => {
+    if (selectedItem) {
+      restoreItem(selectedItem);
+      setSelectedItem(null);
+    }
+  };
+
+  const handleDelete = () => {
+    if (selectedItem && confirm("Supprimer définitivement ce fichier ?")) {
+      removeItem(selectedItem);
+      setSelectedItem(null);
+    }
+  };
+
+  const handleClearAll = () => {
+    if (confirm("Vider complètement la corbeille ?")) {
+      clearAll();
+      setSelectedItem(null);
+    }
   };
 
   if (viewingItem) {
@@ -97,6 +117,32 @@ Système: Windows XP Professional`,
                   <p>Nom: {viewingItem.name}</p>
                   <p>Taille: {viewingItem.size}</p>
                   <p>Supprimé le: {viewingItem.dateDeleted}</p>
+                  {viewingItem.originalPath && (
+                    <p>Emplacement: {viewingItem.originalPath}</p>
+                  )}
+                </div>
+              </div>
+            ) : viewingItem.type === "video" ? (
+              <div className="text-center">
+                {viewingItem.videoUrl ? (
+                  <video
+                    src={viewingItem.videoUrl}
+                    controls
+                    className="max-w-full max-h-[60vh] mx-auto rounded-lg shadow-lg"
+                  />
+                ) : (
+                  <div className="bg-gray-200 p-8 rounded-lg">
+                    <Video size={64} className="mx-auto text-gray-400 mb-4" />
+                    <p className="text-gray-600">Aperçu vidéo non disponible</p>
+                  </div>
+                )}
+                <div className="mt-3 text-sm text-gray-600">
+                  <p>Nom: {viewingItem.name}</p>
+                  <p>Taille: {viewingItem.size}</p>
+                  <p>Supprimé le: {viewingItem.dateDeleted}</p>
+                  {viewingItem.originalPath && (
+                    <p>Emplacement: {viewingItem.originalPath}</p>
+                  )}
                 </div>
               </div>
             ) : (
@@ -149,33 +195,22 @@ Système: Windows XP Professional`,
         <div className="flex space-x-4">
           <button
             className="xp-button text-xs px-3 py-1"
-            onClick={() =>
-              selectedItem && restoreItem(selectedItem) && setSelectedItem(null)
-            }
+            onClick={handleRestore}
             disabled={!selectedItem}
           >
             Restaurer
           </button>
           <button
             className="xp-button text-xs px-3 py-1"
-            onClick={() => {
-              if (selectedItem && confirm("Supprimer définitivement ce fichier ?")) {
-                removeItem(selectedItem);
-                setSelectedItem(null);
-              }
-            }}
+            onClick={handleDelete}
             disabled={!selectedItem}
           >
             Supprimer définitivement
           </button>
           <button
             className="xp-button text-xs px-3 py-1"
-            onClick={() => {
-              if (confirm("Vider complètement la corbeille ?")) {
-                clearAll();
-                setSelectedItem(null);
-              }
-            }}
+            onClick={handleClearAll}
+            disabled={recycleBinItems.length === 0}
           >
             Vider la corbeille
           </button>
@@ -184,44 +219,55 @@ Système: Windows XP Professional`,
 
       {/* File List */}
       <div className="xp-panel flex-1 overflow-auto p-2">
-        {/* Header row */}
-        <div className="grid grid-cols-4 gap-2 bg-gray-200 p-2 text-xs font-bold border-b">
-          <div>Nom</div>
-          <div>Taille</div>
-          <div>Type</div>
-          <div>Date de suppression</div>
-        </div>
+        {recycleBinItems.length === 0 ? (
+          <div className="text-center py-12 text-gray-500">
+            <Trash2 size={48} className="mx-auto mb-4 opacity-50" />
+            <p>La corbeille est vide</p>
+          </div>
+        ) : (
+          <>
+            {/* Header row */}
+            <div className="grid grid-cols-4 gap-2 bg-gray-200 p-2 text-xs font-bold border-b">
+              <div>Nom</div>
+              <div>Taille</div>
+              <div>Type</div>
+              <div>Date de suppression</div>
+            </div>
 
-        {/* Items */}
-        <div className="space-y-1">
-          {recycleBinItems.map((item) => (
-            <motion.div
-              key={item.id}
-              className={`grid grid-cols-4 gap-2 p-2 text-xs cursor-pointer border-b hover:bg-blue-50 ${
-                selectedItem === item.id ? "bg-blue-100 border-blue-300" : ""
-              }`}
-              onClick={() => handleItemClick(item)}
-              onDoubleClick={() => handleItemDoubleClick(item)}
-              whileHover={{ backgroundColor: "#f0f8ff" }}
-            >
-              <div className="flex items-center space-x-2">
-                {getItemIcon(item.type)}
-                <span>{item.name}</span>
-              </div>
-              <div>{item.size}</div>
-              <div className="capitalize">
-                {item.type === "image"
-                  ? "Image JPEG"
-                  : item.type === "text"
-                    ? "Document texte"
-                    : item.type === "video"
-                      ? "Fichier vidéo"
-                      : "Dossier"}
-              </div>
-              <div>{item.dateDeleted}</div>
-            </motion.div>
-          ))}
-        </div>
+            {/* Items */}
+            <div className="space-y-1">
+              {recycleBinItems.map((item) => (
+                <motion.div
+                  key={item.id}
+                  className={`grid grid-cols-4 gap-2 p-2 text-xs cursor-pointer border-b hover:bg-blue-50 ${
+                    selectedItem === item.id
+                      ? "bg-blue-100 border-blue-300"
+                      : ""
+                  }`}
+                  onClick={() => handleItemClick(item)}
+                  onDoubleClick={() => handleItemDoubleClick(item)}
+                  whileHover={{ backgroundColor: "#f0f8ff" }}
+                >
+                  <div className="flex items-center space-x-2">
+                    {getItemIcon(item.type)}
+                    <span>{item.name}</span>
+                  </div>
+                  <div>{item.size}</div>
+                  <div className="capitalize">
+                    {item.type === "image"
+                      ? "Image JPEG"
+                      : item.type === "text"
+                        ? "Document texte"
+                        : item.type === "video"
+                          ? "Fichier vidéo"
+                          : "Dossier"}
+                  </div>
+                  <div>{item.dateDeleted}</div>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Status Bar */}
@@ -232,7 +278,10 @@ Système: Windows XP Professional`,
               ? `1 élément sélectionné`
               : `${recycleBinItems.length} éléments`}
           </span>
-          <span>Espace libéré: 8.2 Mo</span>
+          <span>
+            Espace utilisé: {Math.round(recycleBinItems.length * 2.3 * 10) / 10}{" "}
+            Mo
+          </span>
         </div>
       </div>
 
