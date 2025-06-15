@@ -24,8 +24,8 @@ const XPIcon: React.FC<XPIconProps> = ({
       style={{
         left: position.x,
         top: position.y,
-        width: "80px",
-        height: "80px",
+        width: "120px",
+        height: "100px",
       }}
       onDoubleClick={onDoubleClick}
       whileHover={{ scale: 1.05 }}
