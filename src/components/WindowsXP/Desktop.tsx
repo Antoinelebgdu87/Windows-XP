@@ -4,6 +4,9 @@ import Window from "./Window";
 import Taskbar from "./Taskbar";
 import XPIcon from "./XPIcon";
 import ContextMenu from "./ContextMenu";
+import RecycleBin from "./RecycleBin";
+import AdminPanel from "./AdminPanel";
+import LoginModal from "./LoginModal";
 import {
   PortfolioContent,
   VideosContent,
@@ -18,6 +21,7 @@ import {
   FolderOpen,
   Monitor,
   Trash2,
+  Settings,
 } from "lucide-react";
 
 interface DesktopIcon {
@@ -45,6 +49,8 @@ const Desktop: React.FC = () => {
     show: boolean;
     position: { x: number; y: number };
   }>({ show: false, position: { x: 0, y: 0 } });
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
 
   const desktopIcons: DesktopIcon[] = [
     {
@@ -83,10 +89,17 @@ const Desktop: React.FC = () => {
       action: "open-computer",
     },
     {
+      id: "admin",
+      label: "Administration",
+      icon: <Settings size={32} className="text-purple-600" />,
+      position: { x: 50, y: 550 },
+      action: "open-admin",
+    },
+    {
       id: "recycle",
       label: "Corbeille",
       icon: <Trash2 size={32} className="text-gray-500" />,
-      position: { x: 50, y: 550 },
+      position: { x: 50, y: 650 },
       action: "open-recycle",
     },
   ];
@@ -151,6 +164,28 @@ const Desktop: React.FC = () => {
           height: 300,
         });
         break;
+      case "open-recycle":
+        openWindow({
+          title: "Corbeille",
+          content: <RecycleBin onClose={() => closeWindow("recycle")} />,
+          position: { x: 150, y: 80 },
+          width: 700,
+          height: 500,
+        });
+        break;
+      case "open-admin":
+        if (isAdminLoggedIn) {
+          openWindow({
+            title: "Panneau d'Administration",
+            content: <AdminPanel onClose={() => closeWindow("admin")} />,
+            position: { x: 100, y: 50 },
+            width: 900,
+            height: 600,
+          });
+        } else {
+          setShowLoginModal(true);
+        }
+        break;
       default:
         console.log("Action:", action);
     }
@@ -158,6 +193,21 @@ const Desktop: React.FC = () => {
 
   const handleStartMenuAction = (action: string) => {
     handleIconDoubleClick(action);
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAdminLoggedIn(true);
+    setShowLoginModal(false);
+    // Ouvrir directement le panel admin après connexion
+    setTimeout(() => {
+      openWindow({
+        title: "Panneau d'Administration",
+        content: <AdminPanel onClose={() => closeWindow("admin")} />,
+        position: { x: 100, y: 50 },
+        width: 900,
+        height: 600,
+      });
+    }, 500);
   };
 
   const taskbarButtons = openWindows.map((window) => ({
@@ -238,6 +288,16 @@ const Desktop: React.FC = () => {
               setContextMenu({ show: false, position: { x: 0, y: 0 } })
             }
             onAction={handleContextMenuAction}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Login Modal */}
+      <AnimatePresence>
+        {showLoginModal && (
+          <LoginModal
+            onClose={() => setShowLoginModal(false)}
+            onLoginSuccess={handleLoginSuccess}
           />
         )}
       </AnimatePresence>
