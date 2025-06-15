@@ -73,8 +73,8 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
           });
           setCurrentChar((prev) => prev + 1);
         },
-        currentLine === "" ? 50 : Math.random() * 80 + 30,
-      ); // Vitesse variable pour réalisme
+        currentLine === "" ? 15 : Math.random() * 25 + 10,
+      ); // Vitesse variable pour réalisme (3x plus rapide)
 
       return () => clearTimeout(timer);
     } else {
