@@ -287,7 +287,7 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
-        {activeTab === "reviews" ? (
+        {activeTab === "reviews" && (
           <div className="space-y-4">
             {approvedReviews.length === 0 ? (
               <div className="text-center py-12">
