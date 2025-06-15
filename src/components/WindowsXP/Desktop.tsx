@@ -130,6 +130,15 @@ const Desktop: React.FC = () => {
           height: 400,
         });
         break;
+      case "open-videos":
+        openWindow({
+          title: "Mes Créations - Réalisations Vidéo",
+          content: <VideosContent />,
+          position: { x: 250, y: 120 },
+          width: 600,
+          height: 450,
+        });
+        break;
       case "open-skills":
         openWindow({
           title: "Gestionnaire de périphériques - Compétences",
