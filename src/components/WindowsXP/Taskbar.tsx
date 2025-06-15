@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import StartMenu from "./StartMenu";
+import { useXPSounds } from "../../hooks/useXPSounds";
 
 interface TaskbarButton {
   id: string;
@@ -20,6 +21,7 @@ const Taskbar: React.FC<TaskbarProps> = ({
 }) => {
   const [showStartMenu, setShowStartMenu] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { playClickSound } = useXPSounds();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -51,7 +53,10 @@ const Taskbar: React.FC<TaskbarProps> = ({
         {/* Start Button */}
         <button
           className="xp-start-button"
-          onClick={() => setShowStartMenu(!showStartMenu)}
+          onClick={() => {
+            playClickSound();
+            setShowStartMenu(!showStartMenu);
+          }}
         >
           <div className="flex items-center space-x-1">
             <div className="w-4 h-4 bg-gradient-to-br from-red-500 via-yellow-500 to-green-500 rounded-sm flex items-center justify-center">
