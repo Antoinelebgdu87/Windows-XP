@@ -1,9 +1,9 @@
+/* Import Windows XP styles */
+@import "./styles/windows-xp.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import Windows XP styles */
-@import "./styles/windows-xp.css";
 
 @layer base {
   :root {
