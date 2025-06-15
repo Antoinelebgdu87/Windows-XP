@@ -38,6 +38,7 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       : 0;
 
   const handleSubmitReview = async () => {
+    // Validation des champs requis
     if (
       !newReview.clientName ||
       !newReview.email ||
@@ -48,16 +49,77 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       return;
     }
 
+    // Validation anti-spam
+    const validationErrors = [];
+
+    // Vérifier la longueur du nom (pas trop court, pas trop long)
+    if (newReview.clientName.length < 2 || newReview.clientName.length > 50) {
+      validationErrors.push("Le nom doit contenir entre 2 et 50 caractères");
+    }
+
+    // Vérifier le format email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newReview.email)) {
+      validationErrors.push("Format d'email invalide");
+    }
+
+    // Vérifier la longueur du commentaire (éviter les spams courts ou trop longs)
+    if (newReview.comment.length < 10 || newReview.comment.length > 1000) {
+      validationErrors.push(
+        "Le commentaire doit contenir entre 10 et 1000 caractères",
+      );
+    }
+
+    // Vérifier les mots interdits (spam/fake content)
+    const forbiddenWords = [
+      "fake",
+      "spam",
+      "bot",
+      "test123",
+      "aaaaaa",
+      "lorem ipsum",
+    ];
+    const hasSpamWords = forbiddenWords.some(
+      (word) =>
+        newReview.comment.toLowerCase().includes(word.toLowerCase()) ||
+        newReview.clientName.toLowerCase().includes(word.toLowerCase()),
+    );
+
+    if (hasSpamWords) {
+      validationErrors.push("Contenu détecté comme spam");
+    }
+
+    // Vérifier les doublons d'email (une seule review par email)
+    const existingEmailReview = data.reviews.find(
+      (r) => r.email === newReview.email,
+    );
+    if (existingEmailReview) {
+      validationErrors.push("Un avis existe déjà pour cette adresse email");
+    }
+
+    // Vérifier les caractères répétitifs (anti-spam)
+    if (/(.)\1{4,}/.test(newReview.comment)) {
+      validationErrors.push(
+        "Commentaire invalide (caractères répétitifs détectés)",
+      );
+    }
+
+    if (validationErrors.length > 0) {
+      alert("Erreurs de validation :\n" + validationErrors.join("\n"));
+      return;
+    }
+
     setIsSubmitting(true);
 
     const review: ClientReview = {
       id: Date.now().toString(),
-      clientName: newReview.clientName,
-      email: newReview.email,
+      clientName: newReview.clientName.trim(),
+      email: newReview.email.trim().toLowerCase(),
       rating: rating,
-      comment: newReview.comment,
+      comment: newReview.comment.trim(),
       date: new Date().toISOString().split("T")[0],
       status: "pending",
+      adminNote: "En attente de validation manuelle",
     };
 
     // Ajouter le nouvel avis
@@ -70,7 +132,10 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
     setIsSubmitting(false);
     setShowSuccess(true);
 
-    console.log("📝 Nouvel avis soumis:", review.clientName);
+    console.log(
+      "📝 Nouvel avis soumis (validation requise):",
+      review.clientName,
+    );
 
     // Masquer le message de succès après 3 secondes
     setTimeout(() => {
