@@ -312,28 +312,47 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-blue-600">
-                  {data.videos.length}
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold">Gestion des Avis Clients</h3>
+              <div className="flex items-center gap-2">
+                <div className="text-sm text-gray-600">
+                  Auto-sauvegarde: {isAutoSaveEnabled ? "🟢 Activée" : "🔴 Désactivée"}
                 </div>
-                <div className="text-xs text-gray-600">Publiées</div>
+                <button
+                  onClick={() => {
+                    if (confirm("Supprimer tous les avis en attente ?")) {
+                      const updatedReviews = data.reviews.filter(r => r.status !== "pending");
+                      saveData({ reviews: updatedReviews });
+                      console.log("🧹 Avis en attente supprimés");
+                    }
+                  }}
+                  className="xp-button px-3 py-1 text-sm bg-orange-100"
+                  disabled={data.reviews.filter(r => r.status === "pending").length === 0}
+                >
+                  Supprimer En Attente
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm("Supprimer tous les avis rejetés ?")) {
+                      const updatedReviews = data.reviews.filter(r => r.status !== "rejected");
+                      saveData({ reviews: updatedReviews });
+                      console.log("🗑️ Avis rejetés supprimés");
+                    }
+                  }}
+                  className="xp-button px-3 py-1 text-sm bg-red-100"
+                  disabled={data.reviews.filter(r => r.status === "rejected").length === 0}
+                >
+                  Nettoyer Rejetés
+                </button>
+                <button
+                  onClick={toggleAutoSave}
+                  className="xp-button px-3 py-1 text-sm"
+                >
+                  {isAutoSaveEnabled ? "Désactiver" : "Activer"} Auto-save
+                </button>
               </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-yellow-600">
-                  {data.videos.filter((v) => v.date).length}
-                </div>
-                <div className="text-xs text-gray-600">Créations</div>
-              </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {data.videos.reduce((acc, v) => acc + v.views, 0)}
-                </div>
-                <div className="text-xs text-gray-600">Vues totales</div>
-              </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-purple-600">
+            </div>
                   {data.videos.reduce((acc, v) => acc + v.likes, 0)}
                 </div>
                 <div className="text-xs text-gray-600">Likes totaux</div>
