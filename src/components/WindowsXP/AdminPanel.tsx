@@ -39,44 +39,44 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [videos, setVideos] = useState<VideoProject[]>([
     {
       id: "1",
-      title: "Campagne Nike Air Max 2024",
-      duration: "30s",
+      title: "Roblox Brookhaven RP - Best Moments",
+      duration: "8m12s",
       year: "2024",
-      category: "Publicité",
-      description: "Montage dynamique avec effets spéciaux",
+      category: "Gaming",
+      description: "Compilation virale - 250K vues générées",
       status: "published",
-      views: 1547,
+      views: 250000,
       lastModified: "25/12/2024",
     },
     {
       id: "2",
-      title: "Clip - Artist Émergent",
-      duration: "3m45s",
+      title: "Adopt Me Trading Tips & Tricks",
+      duration: "5m34s",
       year: "2024",
-      category: "Musical",
-      description: "Direction artistique et montage créatif",
+      category: "Tutorial",
+      description: "Guide complet pour traders débutants",
       status: "published",
-      views: 2341,
+      views: 180000,
       lastModified: "24/12/2024",
     },
     {
       id: "3",
-      title: "Documentaire 'Nature Urbaine'",
-      duration: "15min",
-      year: "2023",
-      category: "Documentaire",
-      description: "Narration immersive et étalonnage naturel",
+      title: "Roblox Horror Games Marathon",
+      duration: "12m45s",
+      year: "2024",
+      category: "Horror",
+      description: "Compilation frissons garantis",
       status: "published",
-      views: 892,
+      views: 320000,
       lastModified: "23/12/2024",
     },
     {
       id: "4",
-      title: "Projet Secret Client X",
-      duration: "2m15s",
+      title: "Roblox Funny Moments #16",
+      duration: "4m56s",
       year: "2024",
-      category: "Commercial",
-      description: "En cours de finalisation",
+      category: "Comedy",
+      description: "En cours de montage - sortie prévue",
       status: "draft",
       views: 0,
       lastModified: "22/12/2024",
@@ -93,7 +93,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     title: "",
     duration: "",
     year: "2024",
-    category: "Commercial",
+    category: "Gaming",
     description: "",
     status: "draft",
   });
@@ -405,23 +405,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-bold mb-3">Vues par catégorie</h4>
-                  {["Publicité", "Musical", "Documentaire", "Commercial"].map(
-                    (cat) => {
-                      const categoryVideos = videos.filter(
-                        (v) => v.category === cat,
-                      );
-                      const totalViews = categoryVideos.reduce(
-                        (acc, v) => acc + v.views,
-                        0,
-                      );
-                      return (
-                        <div key={cat} className="flex justify-between mb-2">
-                          <span>{cat}</span>
-                          <span className="font-bold">{totalViews}</span>
-                        </div>
-                      );
-                    },
-                  )}
+                  {[
+                    "Gaming",
+                    "Tutorial",
+                    "Comedy",
+                    "Horror",
+                    "Building",
+                    "Review",
+                  ].map((cat) => {
+                    const categoryVideos = videos.filter(
+                      (v) => v.category === cat,
+                    );
+                    const totalViews = categoryVideos.reduce(
+                      (acc, v) => acc + v.views,
+                      0,
+                    );
+                    return (
+                      <div key={cat} className="flex justify-between mb-2">
+                        <span>{cat}</span>
+                        <span className="font-bold">{totalViews}</span>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div>
                   <h4 className="font-bold mb-3">Vidéos les plus vues</h4>
@@ -846,11 +851,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         }
                         className="w-full p-2 border rounded text-sm"
                       >
-                        <option value="Commercial">Commercial</option>
-                        <option value="Publicité">Publicité</option>
-                        <option value="Musical">Musical</option>
-                        <option value="Documentaire">Documentaire</option>
-                        <option value="Corporate">Corporate</option>
+                        <option value="Gaming">Gaming</option>
+                        <option value="Tutorial">Tutorial</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Building">Building</option>
+                        <option value="Review">Review</option>
                       </select>
                     </div>
 
