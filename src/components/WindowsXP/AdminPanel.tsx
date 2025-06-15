@@ -57,7 +57,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [newVideo, setNewVideo] = useState<Partial<VideoData>>({
     title: "",
     description: "",
-    category: "Gaming",
+    category: "Motion Design",
     thumbnail: "",
     url: "",
     views: 0,
