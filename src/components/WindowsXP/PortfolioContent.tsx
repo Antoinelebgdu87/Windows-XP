@@ -183,7 +183,7 @@ export const VideosContent = () => (
 
     <div className="xp-panel bg-gradient-to-r from-blue-50 to-green-50">
       <div className="text-sm text-center">
-        <strong>🎯 Projets sur mesure</strong>
+        <strong>�� Projets sur mesure</strong>
         <br />
         <span className="text-xs">
           Vous avez un projet spécifique Roblox ? Contactez-moi pour un devis
@@ -210,8 +210,6 @@ export const SkillsContent = () => (
           {[
             { name: "Adobe Premiere Pro", level: 90, color: "bg-purple-500" },
             { name: "After Effects", level: 85, color: "bg-blue-500" },
-            { name: "OBS Studio", level: 95, color: "bg-green-500" },
-            { name: "Photoshop", level: 80, color: "bg-red-500" },
           ].map((skill, index) => (
             <div key={index} className="text-sm">
               <div className="flex justify-between mb-1">
@@ -229,44 +227,16 @@ export const SkillsContent = () => (
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="xp-panel">
-          <h3 className="font-bold mb-2 text-green-700">🎯 Gaming Expertise</h3>
-          <div className="text-xs space-y-1">
-            <div>• Gameplay Roblox</div>
-            <div>• Montage viral</div>
-            <div>• Transitions dynamiques</div>
-            <div>• Sound Design gaming</div>
-            <div>• Thumbnails attractives</div>
-            <div>• Contenu engageant</div>
-          </div>
-        </div>
-
-        <div className="xp-panel">
-          <h3 className="font-bold mb-2 text-orange-700">
-            🔧 Spécialités Roblox
-          </h3>
-          <div className="text-xs space-y-1">
-            <div>• Capture gameplay HD</div>
-            <div>• Montage rythme rapide</div>
-            <div>• Effets visuels gaming</div>
-            <div>• Optimisation YouTube</div>
-            <div>• Audience jeune</div>
-            <div>• Tendances Roblox</div>
-          </div>
-        </div>
-      </div>
-
       <div className="xp-panel bg-gradient-to-r from-green-50 to-blue-50">
         <h3 className="font-bold mb-2">🏆 Résultats & Achievements</h3>
         <div className="text-sm space-y-1">
           <div className="flex justify-between">
             <span>+1 Million de vues générées</span>
-            <span className="text-green-600 text-xs">✓ 2024</span>
+            <span className="text-green-600 text-xs">✓ 2025</span>
           </div>
           <div className="flex justify-between">
             <span>2 ans d'expérience Roblox</span>
-            <span className="text-green-600 text-xs">✓ 2022-2024</span>
+            <span className="text-green-600 text-xs">✓ 2023-2025</span>
           </div>
           <div className="flex justify-between">
             <span>Spécialiste contenu viral</span>
