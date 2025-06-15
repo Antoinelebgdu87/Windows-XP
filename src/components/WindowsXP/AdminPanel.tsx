@@ -347,29 +347,49 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     {videos.map((video) => (
                       <tr key={video.id} className="border-b hover:bg-gray-50">
                         <td className="p-3">
-                      <div>
-                        <label className="block font-bold mb-1">Durée *</label>
-                        <select
-                          value={newFile.type || "text"}
-                          onChange={(e) =>
-                            setNewFile({
-                              ...newFile,
-                              type: e.target.value as RecycleBinItem["type"],
-                            })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                        >
-                          onChange={(e) =>
-                            isCreating
-                              ? setNewVideo({ ...newVideo, year: e.target.value })
-                              : setEditingVideo({
-                                  ...editingVideo!,
-                                  year: e.target.value,
-                                })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                        />
-                      </div>
+                          <div>
+                            <div className="font-medium">{video.title}</div>
+                            <div className="text-gray-600 text-xs">
+                              {video.description}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                            {video.category}
+                          </span>
+                        </td>
+                        <td className="p-3">{video.duration}</td>
+                        <td className="p-3">
+                          <span
+                            className={`px-2 py-1 rounded text-xs ${getStatusColor(video.status)}`}
+                          >
+                            {getStatusLabel(video.status)}
+                          </span>
+                        </td>
+                        <td className="p-3">{video.views.toLocaleString()}</td>
+                        <td className="p-3 text-gray-600">
+                          {video.lastModified}
+                        </td>
+                        <td className="p-3">
+                          <div className="flex space-x-2">
+                            <button
+                              onClick={() => handleEditVideo(video)}
+                              className="text-blue-600 hover:bg-blue-100 p-1 rounded"
+                              title="Modifier"
+                            >
+                              <Edit size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteVideo(video.id)}
+                              className="text-red-600 hover:bg-red-100 p-1 rounded"
+                              title="Supprimer"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -504,16 +524,31 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     <tbody>
                       {recycleBinItems.map((item) => (
                         <tr key={item.id} className="border-b hover:bg-gray-50">
-                        <label className="block font-bold mb-1">Taille *</label>
-                        <input
-                          type="text"
-                          value={newFile.size || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, size: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                          placeholder="2.5 Mo"
-                        />
+                          <td className="p-3">
+                            <div className="flex items-center space-x-2">
+                              {getFileIcon(item.type)}
+                              <span>{item.name}</span>
+                            </div>
+                          </td>
+                          <td className="p-3">
+                            <span className="capitalize">
+                              {item.type === "image"
+                                ? "Image"
+                                : item.type === "text"
+                                  ? "Document"
+                                  : item.type === "video"
+                                    ? "Vidéo"
+                                    : "Autre"}
+                            </span>
+                          </td>
+                          <td className="p-3">{item.size}</td>
+                          <td className="p-3 text-gray-600">
+                            {item.originalPath || "Inconnu"}
+                          </td>
+                          <td className="p-3 text-gray-600">
+                            {item.dateDeleted}
+                          </td>
+                          <td className="p-3">
                             <button
                               onClick={() => handleDeleteFromRecycle(item.id)}
                               className="text-red-600 hover:bg-red-100 p-1 rounded"
@@ -596,7 +631,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 {isAddingFile ? (
                   <>
                     <div>
-                      <label className="block font-bold mb-1">Nom du fichier *</label>
+                      <label className="block font-bold mb-1">
+                        Nom du fichier *
+                      </label>
                       <input
                         type="text"
                         value={newFile.name || ""}
@@ -607,24 +644,39 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         placeholder="exemple.txt"
                       />
                     </div>
+
                     <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block font-bold mb-1">Titre *</label>
-                      <input
-                        type="text"
-                        value={isCreating ? (newVideo.title || "") : (editingVideo?.title || "")}
-                        onChange={(e) =>
-                          isCreating
-                            ? setNewVideo({ ...newVideo, title: e.target.value })
-                            : setEditingVideo({
-                                ...editingVideo!,
-                                title: e.target.value,
-                              })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                        placeholder="Titre de la vidéo"
-                      />
-                    </div>
+                      <div>
+                        <label className="block font-bold mb-1">
+                          Type de fichier
+                        </label>
+                        <select
+                          value={newFile.type || "text"}
+                          onChange={(e) =>
+                            setNewFile({
+                              ...newFile,
+                              type: e.target.value as RecycleBinItem["type"],
+                            })
+                          }
+                          className="w-full p-2 border rounded text-sm"
+                        >
+                          <option value="text">Document texte</option>
+                          <option value="image">Image</option>
+                          <option value="video">Vidéo</option>
+                          <option value="folder">Dossier</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block font-bold mb-1">Taille *</label>
+                        <input
+                          type="text"
+                          value={newFile.size || ""}
+                          onChange={(e) =>
+                            setNewFile({ ...newFile, size: e.target.value })
+                          }
+                          className="w-full p-2 border rounded text-sm"
+                          placeholder="2.5 Mo"
+                        />
                       </div>
                     </div>
 
@@ -634,7 +686,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                       </label>
                       <input
                         type="text"
-                        value={newFile.originalPath}
+                        value={newFile.originalPath || ""}
                         onChange={(e) =>
                           setNewFile({
                             ...newFile,
@@ -652,7 +704,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                           Contenu du fichier
                         </label>
                         <textarea
-                          value={newFile.content}
+                          value={newFile.content || ""}
                           onChange={(e) =>
                             setNewFile({ ...newFile, content: e.target.value })
                           }
@@ -669,7 +721,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         </label>
                         <input
                           type="url"
-                          value={newFile.imageUrl}
+                          value={newFile.imageUrl || ""}
                           onChange={(e) =>
                             setNewFile({ ...newFile, imageUrl: e.target.value })
                           }
@@ -686,7 +738,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         </label>
                         <input
                           type="url"
-                          value={newFile.videoUrl}
+                          value={newFile.videoUrl || ""}
                           onChange={(e) =>
                             setNewFile({ ...newFile, videoUrl: e.target.value })
                           }
@@ -699,132 +751,166 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 ) : (
                   <>
                     <div>
-                      <label className="block font-bold mb-1">Emplacement original</label>
+                      <label className="block font-bold mb-1">Titre *</label>
                       <input
                         type="text"
-                        value={newFile.originalPath || ""}
+                        value={
+                          isCreating
+                            ? newVideo.title || ""
+                            : editingVideo?.title || ""
+                        }
                         onChange={(e) =>
-                          setNewFile({ ...newFile, originalPath: e.target.value })
+                          isCreating
+                            ? setNewVideo({
+                                ...newVideo,
+                                title: e.target.value,
+                              })
+                            : setEditingVideo({
+                                ...editingVideo!,
+                                title: e.target.value,
+                              })
                         }
                         className="w-full p-2 border rounded text-sm"
-                        placeholder="C:\Users\Monteur\Documents"
+                        placeholder="Titre de la vidéo"
                       />
                     </div>
 
-                    {newFile.type === "text" && (
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block font-bold mb-1">Contenu du fichier</label>
-                        <textarea
-                          value={newFile.content || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, content: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm h-24"
-                          placeholder="Contenu du document..."
-                        />
-                      </div>
-                    )}
-
-                    {newFile.type === "image" && (
-                      <div>
-                        <label className="block font-bold mb-1">URL de l'image</label>
+                        <label className="block font-bold mb-1">Durée *</label>
                         <input
-                          type="url"
-                          value={newFile.imageUrl || ""}
+                          type="text"
+                          value={
+                            isCreating
+                              ? newVideo.duration || ""
+                              : editingVideo?.duration || ""
+                          }
                           onChange={(e) =>
-                            setNewFile({ ...newFile, imageUrl: e.target.value })
+                            isCreating
+                              ? setNewVideo({
+                                  ...newVideo,
+                                  duration: e.target.value,
+                                })
+                              : setEditingVideo({
+                                  ...editingVideo!,
+                                  duration: e.target.value,
+                                })
                           }
                           className="w-full p-2 border rounded text-sm"
-                          placeholder="https://..."
+                          placeholder="2m30s"
                         />
                       </div>
-                    )}
-
-                    {newFile.type === "video" && (
                       <div>
-                        <label className="block font-bold mb-1">URL de la vidéo</label>
+                        <label className="block font-bold mb-1">Année</label>
                         <input
-                          type="url"
-                          value={newFile.videoUrl || ""}
+                          type="text"
+                          value={
+                            isCreating
+                              ? newVideo.year || ""
+                              : editingVideo?.year || ""
+                          }
                           onChange={(e) =>
-                            setNewFile({ ...newFile, videoUrl: e.target.value })
+                            isCreating
+                              ? setNewVideo({
+                                  ...newVideo,
+                                  year: e.target.value,
+                                })
+                              : setEditingVideo({
+                                  ...editingVideo!,
+                                  year: e.target.value,
+                                })
                           }
                           className="w-full p-2 border rounded text-sm"
-                          placeholder="https://..."
                         />
                       </div>
-                    )}
+                    </div>
 
-                <div>
-                  <label className="block font-bold mb-1">Catégorie</label>
-                  <select
-                    value={
-                      isCreating ? (newVideo.category || "Commercial") : (editingVideo?.category || "Commercial")
-                    }
-                    onChange={(e) =>
-                      isCreating
-                        ? setNewVideo({ ...newVideo, category: e.target.value })
-                        : setEditingVideo({
-                            ...editingVideo!,
-                            category: e.target.value,
-                          })
-                    }
-                    className="w-full p-2 border rounded text-sm"
-                  >
-                    <option value="Commercial">Commercial</option>
-                    <option value="Publicité">Publicité</option>
-                    <option value="Musical">Musical</option>
-                    <option value="Documentaire">Documentaire</option>
-                    <option value="Corporate">Corporate</option>
-                  </select>
-                </div>
+                    <div>
+                      <label className="block font-bold mb-1">Catégorie</label>
+                      <select
+                        value={
+                          isCreating
+                            ? newVideo.category || "Commercial"
+                            : editingVideo?.category || "Commercial"
+                        }
+                        onChange={(e) =>
+                          isCreating
+                            ? setNewVideo({
+                                ...newVideo,
+                                category: e.target.value,
+                              })
+                            : setEditingVideo({
+                                ...editingVideo!,
+                                category: e.target.value,
+                              })
+                        }
+                        className="w-full p-2 border rounded text-sm"
+                      >
+                        <option value="Commercial">Commercial</option>
+                        <option value="Publicité">Publicité</option>
+                        <option value="Musical">Musical</option>
+                        <option value="Documentaire">Documentaire</option>
+                        <option value="Corporate">Corporate</option>
+                      </select>
+                    </div>
 
-                <div>
-                  <label className="block font-bold mb-1">Description</label>
-                  <textarea
-                    value={
-                      isCreating
-                        ? (newVideo.description || "")
-                        : (editingVideo?.description || "")
-                    }
-                    onChange={(e) =>
-                      isCreating
-                        ? setNewVideo({
-                            ...newVideo,
-                            description: e.target.value,
-                          })
-                        : setEditingVideo({
-                            ...editingVideo!,
-                            description: e.target.value,
-                          })
-                    }
-                    className="w-full p-2 border rounded text-sm h-20"
-                    placeholder="Description de la vidéo..."
-                  />
-                </div>
+                    <div>
+                      <label className="block font-bold mb-1">
+                        Description
+                      </label>
+                      <textarea
+                        value={
+                          isCreating
+                            ? newVideo.description || ""
+                            : editingVideo?.description || ""
+                        }
+                        onChange={(e) =>
+                          isCreating
+                            ? setNewVideo({
+                                ...newVideo,
+                                description: e.target.value,
+                              })
+                            : setEditingVideo({
+                                ...editingVideo!,
+                                description: e.target.value,
+                              })
+                        }
+                        className="w-full p-2 border rounded text-sm h-20"
+                        placeholder="Description de la vidéo..."
+                      />
+                    </div>
 
-                <div>
-                  <label className="block font-bold mb-1">Statut</label>
-                  <select
-                    value={isCreating ? (newVideo.status || "draft") : (editingVideo?.status || "draft")}
-                    onChange={(e) =>
-                      isCreating
-                        ? setNewVideo({
-                            ...newVideo,
-                            status: e.target.value as VideoProject["status"],
-                          })
-                        : setEditingVideo({
-                            ...editingVideo!,
-                            status: e.target.value as VideoProject["status"],
-                          })
-                    }
-                    className="w-full p-2 border rounded text-sm"
-                  >
-                    <option value="draft">Brouillon</option>
-                    <option value="published">Publié</option>
-                    <option value="archived">Archivé</option>
-                  </select>
-                </div>
+                    <div>
+                      <label className="block font-bold mb-1">Statut</label>
+                      <select
+                        value={
+                          isCreating
+                            ? newVideo.status || "draft"
+                            : editingVideo?.status || "draft"
+                        }
+                        onChange={(e) =>
+                          isCreating
+                            ? setNewVideo({
+                                ...newVideo,
+                                status: e.target
+                                  .value as VideoProject["status"],
+                              })
+                            : setEditingVideo({
+                                ...editingVideo!,
+                                status: e.target
+                                  .value as VideoProject["status"],
+                              })
+                        }
+                        className="w-full p-2 border rounded text-sm"
+                      >
+                        <option value="draft">Brouillon</option>
+                        <option value="published">Publié</option>
+                        <option value="archived">Archivé</option>
+                      </select>
+                    </div>
+                  </>
+                )}
+              </div>
 
               <div className="p-4 border-t flex justify-end space-x-2">
                 <button
