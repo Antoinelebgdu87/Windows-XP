@@ -26,6 +26,7 @@ import {
 } from "../../contexts/RecycleBinContext";
 import { useSaveData, VideoData } from "../../contexts/SaveDataContext";
 import { useAutoSave } from "../../hooks/useAutoSave";
+import ReviewModerationTools from "./ReviewModerationTools";
 
 interface AdminPanelProps {
   onClose: () => void;
