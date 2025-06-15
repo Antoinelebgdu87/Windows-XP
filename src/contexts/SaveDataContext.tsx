@@ -163,6 +163,49 @@ const defaultData: SavedData = {
       { name: "Comedy", count: 2 },
     ],
   },
+  reviews: [
+    {
+      id: "1",
+      clientName: "GameMaster_YT",
+      email: "gamemaster@example.com",
+      rating: 5,
+      comment:
+        "Montage incroyable ! Lino a transformé mes clips Brookhaven en chef-d'œuvre. Résultat au-delà de mes attentes, transitions fluides et effets parfaits. Je recommande à 100% !",
+      date: "2025-01-18",
+      status: "approved",
+    },
+    {
+      id: "2",
+      clientName: "RobloxPro_2024",
+      email: "robloxpro@example.com",
+      rating: 5,
+      comment:
+        "Service rapide et professionnel. Mon montage Adopt Me a généré +50K vues grâce au travail de Lino. Un vrai expert du gaming content !",
+      date: "2025-01-15",
+      status: "approved",
+    },
+    {
+      id: "3",
+      clientName: "NoobGamer_FR",
+      email: "noobgamer@example.com",
+      rating: 4,
+      comment:
+        "Très bon travail sur mon montage Horror Games. Quelques petites retouches demandées mais résultat final excellent. Communication top !",
+      date: "2025-01-12",
+      status: "approved",
+    },
+    {
+      id: "4",
+      clientName: "ContentCreator_Pro",
+      email: "creator@example.com",
+      rating: 5,
+      comment:
+        "Collaboration de rêve ! Lino comprend parfaitement les besoins des créateurs Roblox. Mon intro est juste parfaite, merci !",
+      date: "2025-01-20",
+      status: "pending",
+      adminNote: "En attente de validation",
+    },
+  ],
   settings: {
     autoSave: true,
     theme: "default",
