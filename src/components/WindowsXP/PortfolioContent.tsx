@@ -8,8 +8,12 @@ export const PortfolioContent = () => (
         <span className="text-white text-2xl font-bold">MV</span>
       </div>
       <div>
-        <h2 className="text-xl font-bold text-blue-800">Monteur Vidéo Professionnel</h2>
-        <p className="text-sm text-gray-600">Créateur de contenus audiovisuels</p>
+        <h2 className="text-xl font-bold text-blue-800">
+          Monteur Vidéo Professionnel
+        </h2>
+        <p className="text-sm text-gray-600">
+          Créateur de contenus audiovisuels
+        </p>
       </div>
     </div>
 
@@ -32,9 +36,9 @@ export const PortfolioContent = () => (
 
     <div className="space-y-3">
       <p className="text-sm leading-relaxed">
-        Passionné par la création audiovisuelle depuis plus de 5 ans, je transforme vos idées 
-        en histoires captivantes. Ma spécialité ? Donner vie à vos projets avec créativité 
-        et précision technique.
+        Passionné par la création audiovisuelle depuis plus de 5 ans, je
+        transforme vos idées en histoires captivantes. Ma spécialité ? Donner
+        vie à vos projets avec créativité et précision technique.
       </p>
 
       <div className="xp-panel">
@@ -72,9 +76,9 @@ export const PortfolioContent = () => (
           <span className="font-bold text-sm">Ma philosophie</span>
         </div>
         <p className="text-sm italic">
-          "Chaque projet est unique et mérite une approche créative personnalisée. 
-          Mon objectif est de dépasser vos attentes en alliant technique de pointe 
-          et vision artistique."
+          "Chaque projet est unique et mérite une approche créative
+          personnalisée. Mon objectif est de dépasser vos attentes en alliant
+          technique de pointe et vision artistique."
         </p>
       </div>
 
@@ -93,7 +97,7 @@ export const VideosContent = () => (
       <span className="mr-2">🎬</span>
       Portfolio Vidéo
     </h2>
-    
+
     <div className="xp-panel bg-yellow-50">
       <div className="text-sm flex items-center">
         <span className="mr-2">💡</span>
@@ -104,53 +108,53 @@ export const VideosContent = () => (
 
     <div className="space-y-3">
       {[
-        { 
-          title: "Campagne Nike Air Max 2024", 
-          duration: "30s", 
+        {
+          title: "Campagne Nike Air Max 2024",
+          duration: "30s",
           year: "2024",
           category: "Publicité",
           color: "bg-red-100",
-          description: "Montage dynamique avec effets spéciaux"
+          description: "Montage dynamique avec effets spéciaux",
         },
-        { 
-          title: "Clip - Artist Émergent", 
-          duration: "3m45s", 
+        {
+          title: "Clip - Artist Émergent",
+          duration: "3m45s",
           year: "2024",
           category: "Musical",
           color: "bg-purple-100",
-          description: "Direction artistique et montage créatif"
+          description: "Direction artistique et montage créatif",
         },
-        { 
-          title: "Documentaire 'Nature Urbaine'", 
-          duration: "15min", 
+        {
+          title: "Documentaire 'Nature Urbaine'",
+          duration: "15min",
           year: "2023",
           category: "Documentaire",
           color: "bg-green-100",
-          description: "Narration immersive et étalonnage naturel"
+          description: "Narration immersive et étalonnage naturel",
         },
-        { 
-          title: "Série Web 'Tech Stories'", 
-          duration: "8min", 
+        {
+          title: "Série Web 'Tech Stories'",
+          duration: "8min",
           year: "2024",
           category: "Corporate",
           color: "bg-blue-100",
-          description: "Montage informatif et motion graphics"
+          description: "Montage informatif et motion graphics",
         },
-        { 
-          title: "Mariage Premium", 
-          duration: "4min", 
+        {
+          title: "Mariage Premium",
+          duration: "4min",
           year: "2024",
           category: "Événementiel",
           color: "bg-pink-100",
-          description: "Storytelling émotionnel et cinématique"
+          description: "Storytelling émotionnel et cinématique",
         },
-        { 
-          title: "Teaser Produit Innovation", 
-          duration: "1m30s", 
+        {
+          title: "Teaser Produit Innovation",
+          duration: "1m30s",
           year: "2024",
           category: "Commercial",
           color: "bg-orange-100",
-          description: "Montage percutant et animations 3D"
+          description: "Montage percutant et animations 3D",
         },
       ].map((video, index) => (
         <div
@@ -163,9 +167,7 @@ export const VideosContent = () => (
               {video.category}
             </div>
           </div>
-          <div className="text-xs text-gray-600 mb-2">
-            {video.description}
-          </div>
+          <div className="text-xs text-gray-600 mb-2">{video.description}</div>
           <div className="flex justify-between items-center">
             <div className="text-xs text-gray-500">
               {video.duration} • {video.year}
@@ -181,7 +183,8 @@ export const VideosContent = () => (
         <strong>🎯 Projets sur mesure</strong>
         <br />
         <span className="text-xs">
-          Vous avez un projet spécifique ? Contactez-moi pour un devis personnalisé.
+          Vous avez un projet spécifique ? Contactez-moi pour un devis
+          personnalisé.
         </span>
       </div>
     </div>
@@ -194,10 +197,12 @@ export const SkillsContent = () => (
       <span className="mr-2">⚡</span>
       Expertise Technique
     </h2>
-    
+
     <div className="space-y-3">
       <div className="xp-panel">
-        <h3 className="font-bold mb-3 text-blue-700">🎨 Logiciels de Montage</h3>
+        <h3 className="font-bold mb-3 text-blue-700">
+          🎨 Logiciels de Montage
+        </h3>
         <div className="space-y-2">
           {[
             { name: "Adobe Premiere Pro", level: 95, color: "bg-purple-500" },
@@ -211,7 +216,7 @@ export const SkillsContent = () => (
                 <span className="text-xs font-bold">{skill.level}%</span>
               </div>
               <div className="w-full bg-gray-200 h-2 rounded">
-                <div 
+                <div
                   className={`h-2 rounded ${skill.color}`}
                   style={{ width: `${skill.level}%` }}
                 ></div>
@@ -283,11 +288,13 @@ export const ContactContent = () => (
       <span className="mr-2">📞</span>
       Contact & Collaboration
     </h2>
-    
+
     <div className="xp-panel bg-green-50">
       <div className="flex items-center justify-center mb-3">
         <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-        <span className="font-bold text-green-700">Disponible pour nouveaux projets</span>
+        <span className="font-bold text-green-700">
+          Disponible pour nouveaux projets
+        </span>
       </div>
     </div>
 
@@ -342,10 +349,18 @@ export const ContactContent = () => (
         <div className="xp-panel">
           <h3 className="font-bold mb-2 text-orange-700">⏱️ Réactivité</h3>
           <div className="text-sm space-y-1">
-            <div>📩 Réponse : <strong>< 2h</strong></div>
-            <div>📋 Devis : <strong>24h</strong></div>
-            <div>🚀 Début projet : <strong>48h</strong></div>
-            <div>⚡ Urgence : <strong>Sur demande</strong></div>
+            <div>
+              📩 Réponse : <strong>&lt; 2h</strong>
+            </div>
+            <div>
+              📋 Devis : <strong>24h</strong>
+            </div>
+            <div>
+              🚀 Début projet : <strong>48h</strong>
+            </div>
+            <div>
+              ⚡ Urgence : <strong>Sur demande</strong>
+            </div>
           </div>
         </div>
       </div>
