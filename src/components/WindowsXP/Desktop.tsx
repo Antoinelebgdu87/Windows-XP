@@ -58,7 +58,7 @@ const Desktop: React.FC = () => {
     {
       id: "portfolio",
       label: "Portfolio Linolvt",
-      icon: <User size={32} className="text-blue-600" />,
+      icon: <User size={48} className="text-blue-600" />,
       position: { x: 30, y: 30 },
       action: "open-portfolio",
     },
