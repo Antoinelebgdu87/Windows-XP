@@ -90,56 +90,88 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   });
 
   const handleCreateVideo = () => {
-    if (!newVideo.title || !newVideo.duration) return;
+    if (!newVideo.title || !newVideo.description) return;
 
-    const video: VideoProject = {
+    const video: VideoData = {
       id: Date.now().toString(),
-      title: newVideo.title,
-      duration: newVideo.duration,
-      year: newVideo.year || "2024",
-      category: newVideo.category || "Commercial",
+      title: newVideo.title || "",
       description: newVideo.description || "",
-      status: (newVideo.status as VideoProject["status"]) || "draft",
-      views: 0,
-      lastModified: new Date().toLocaleDateString("fr-FR"),
+      category: newVideo.category || "Gaming",
+      thumbnail:
+        newVideo.thumbnail ||
+        "https://images.pexels.com/photos/2835436/pexels-photo-2835436.jpeg",
+      url: newVideo.url || "",
+      views: newVideo.views || 0,
+      likes: newVideo.likes || 0,
+      date: newVideo.date || new Date().toISOString().split("T")[0],
     };
 
-    setVideos([...videos, video]);
+    const updatedVideos = [...data.videos, video];
+    saveData({ videos: updatedVideos });
+
     setNewVideo({
       title: "",
-      duration: "",
-      year: "2024",
-      category: "Commercial",
       description: "",
-      status: "draft",
+      category: "Gaming",
+      thumbnail: "",
+      url: "",
+      views: 0,
+      likes: 0,
+      date: new Date().toISOString().split("T")[0],
     });
     setIsCreating(false);
+    console.log("🎬 Nouvelle vidéo créée:", video.title);
   };
 
-  const handleEditVideo = (video: VideoProject) => {
+  const handleEditVideo = (video: VideoData) => {
     setEditingVideo({ ...video });
   };
 
   const handleSaveEdit = () => {
     if (!editingVideo) return;
 
-    setVideos(
-      videos.map((v) =>
-        v.id === editingVideo.id
-          ? {
-              ...editingVideo,
-              lastModified: new Date().toLocaleDateString("fr-FR"),
-            }
-          : v,
-      ),
+    const updatedVideos = data.videos.map((v) =>
+      v.id === editingVideo.id ? editingVideo : v,
     );
+    saveData({ videos: updatedVideos });
     setEditingVideo(null);
+    console.log("✏️ Vidéo modifiée:", editingVideo.title);
   };
 
   const handleDeleteVideo = (id: string) => {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette vidéo ?")) {
-      setVideos(videos.filter((v) => v.id !== id));
+      const updatedVideos = data.videos.filter((v) => v.id !== id);
+      saveData({ videos: updatedVideos });
+      console.log("🗑️ Vidéo supprimée");
     }
+  };
+
+  const handleExportData = () => {
+    const dataStr = exportData();
+    const dataBlob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `linolvt_portfolio_backup_${new Date().toISOString().split("T")[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+    console.log("📦 Sauvegarde exportée");
+  };
+
+  const handleImportData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target?.result as string;
+      if (importData(content)) {
+        alert("Sauvegarde importée avec succès !");
+      } else {
+        alert("Erreur lors de l'importation de la sauvegarde.");
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleAddFile = () => {
