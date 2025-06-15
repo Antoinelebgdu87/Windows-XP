@@ -49,28 +49,28 @@ const Desktop: React.FC = () => {
   const desktopIcons: DesktopIcon[] = [
     {
       id: "portfolio",
-      label: "Mon Portfolio",
+      label: "À propos de moi",
       icon: <User size={32} className="text-blue-600" />,
       position: { x: 50, y: 50 },
       action: "open-portfolio",
     },
     {
       id: "videos",
-      label: "Réalisations Vidéo",
+      label: "Adobe Premiere Pro",
       icon: <Camera size={32} className="text-red-600" />,
       position: { x: 50, y: 150 },
       action: "open-videos",
     },
     {
       id: "skills",
-      label: "Compétences",
+      label: "Gestionnaire de périphériques",
       icon: <FileText size={32} className="text-green-600" />,
       position: { x: 50, y: 250 },
       action: "open-skills",
     },
     {
       id: "contact",
-      label: "Contact",
+      label: "Carnet d'adresses",
       icon: <Mail size={32} className="text-yellow-600" />,
       position: { x: 50, y: 350 },
       action: "open-contact",
@@ -117,7 +117,7 @@ const Desktop: React.FC = () => {
     switch (action) {
       case "open-portfolio":
         openWindow({
-          title: "À propos - Portfolio",
+          title: "À propos de moi - Propriétés",
           content: <PortfolioContent />,
           position: { x: 200, y: 100 },
           width: 500,
@@ -126,7 +126,7 @@ const Desktop: React.FC = () => {
         break;
       case "open-videos":
         openWindow({
-          title: "Mes Réalisations Vidéo",
+          title: "Mes Réalisations Vidéo - Adobe Premiere Pro",
           content: <VideosContent />,
           position: { x: 250, y: 120 },
           width: 600,
@@ -135,7 +135,7 @@ const Desktop: React.FC = () => {
         break;
       case "open-skills":
         openWindow({
-          title: "Compétences Techniques",
+          title: "Gestionnaire de périphériques - Compétences",
           content: <SkillsContent />,
           position: { x: 300, y: 140 },
           width: 450,
@@ -144,7 +144,7 @@ const Desktop: React.FC = () => {
         break;
       case "open-contact":
         openWindow({
-          title: "Contact & Informations",
+          title: "Carnet d'adresses - Contact",
           content: <ContactContent />,
           position: { x: 350, y: 160 },
           width: 400,
