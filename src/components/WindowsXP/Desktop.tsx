@@ -61,13 +61,6 @@ const Desktop: React.FC = () => {
       action: "open-portfolio",
     },
     {
-      id: "videos",
-      label: "Adobe Premiere Pro",
-      icon: <Camera size={32} className="text-red-600" />,
-      position: { x: 50, y: 150 },
-      action: "open-videos",
-    },
-    {
       id: "skills",
       label: "Gestionnaire de périphériques",
       icon: <FileText size={32} className="text-green-600" />,
