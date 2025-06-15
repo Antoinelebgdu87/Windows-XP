@@ -457,6 +457,212 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         )}
 
+        {activeTab === "reviews" && (
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold">Gestion des Avis Clients</h3>
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-gray-600">
+                  Auto-sauvegarde:{" "}
+                  {isAutoSaveEnabled ? "🟢 Activée" : "🔴 Désactivée"}
+                </div>
+                <button
+                  onClick={toggleAutoSave}
+                  className="xp-button px-3 py-1 text-sm"
+                >
+                  {isAutoSaveEnabled ? "Désactiver" : "Activer"} Auto-save
+                </button>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {data.reviews.filter((r) => r.status === "approved").length}
+                </div>
+                <div className="text-xs text-gray-600">Approuvés</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-yellow-600">
+                  {data.reviews.filter((r) => r.status === "pending").length}
+                </div>
+                <div className="text-xs text-gray-600">En attente</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-red-600">
+                  {data.reviews.filter((r) => r.status === "rejected").length}
+                </div>
+                <div className="text-xs text-gray-600">Rejetés</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {data.reviews.length > 0
+                    ? (
+                        data.reviews
+                          .filter((r) => r.status === "approved")
+                          .reduce((sum, r) => sum + r.rating, 0) /
+                        data.reviews.filter((r) => r.status === "approved")
+                          .length
+                      ).toFixed(1)
+                    : "0.0"}
+                </div>
+                <div className="text-xs text-gray-600">Note moyenne</div>
+              </div>
+            </div>
+
+            {/* Reviews List */}
+            <div className="xp-panel">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="text-left p-3">Client</th>
+                      <th className="text-left p-3">Note</th>
+                      <th className="text-left p-3">Commentaire</th>
+                      <th className="text-left p-3">Date</th>
+                      <th className="text-left p-3">Statut</th>
+                      <th className="text-left p-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.reviews.map((review) => (
+                      <tr key={review.id} className="border-b hover:bg-gray-50">
+                        <td className="p-3">
+                          <div>
+                            <div className="font-medium">
+                              {review.clientName}
+                            </div>
+                            <div className="text-gray-600 text-xs">
+                              {review.email}
+                            </div>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex items-center gap-1">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                size={14}
+                                className={
+                                  star <= review.rating
+                                    ? "text-yellow-500 fill-yellow-500"
+                                    : "text-gray-300"
+                                }
+                              />
+                            ))}
+                            <span className="ml-1 text-sm">
+                              ({review.rating})
+                            </span>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <div className="max-w-xs truncate">
+                            {review.comment}
+                          </div>
+                        </td>
+                        <td className="p-3 text-xs text-gray-600">
+                          {new Date(review.date).toLocaleDateString("fr-FR")}
+                        </td>
+                        <td className="p-3">
+                          <span
+                            className={`px-2 py-1 rounded text-xs ${
+                              review.status === "approved"
+                                ? "bg-green-100 text-green-800"
+                                : review.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-800"
+                                  : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {review.status === "approved"
+                              ? "Approuvé"
+                              : review.status === "pending"
+                                ? "En attente"
+                                : "Rejeté"}
+                          </span>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex space-x-1">
+                            {review.status === "pending" && (
+                              <>
+                                <button
+                                  onClick={() => {
+                                    const updatedReviews = data.reviews.map(
+                                      (r) =>
+                                        r.id === review.id
+                                          ? {
+                                              ...r,
+                                              status: "approved" as const,
+                                            }
+                                          : r,
+                                    );
+                                    saveData({ reviews: updatedReviews });
+                                    console.log(
+                                      "✅ Avis approuvé:",
+                                      review.clientName,
+                                    );
+                                  }}
+                                  className="xp-button p-1 bg-green-100 hover:bg-green-200"
+                                  title="Approuver"
+                                >
+                                  <Check size={14} />
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    const updatedReviews = data.reviews.map(
+                                      (r) =>
+                                        r.id === review.id
+                                          ? {
+                                              ...r,
+                                              status: "rejected" as const,
+                                            }
+                                          : r,
+                                    );
+                                    saveData({ reviews: updatedReviews });
+                                    console.log(
+                                      "❌ Avis rejeté:",
+                                      review.clientName,
+                                    );
+                                  }}
+                                  className="xp-button p-1 bg-red-100 hover:bg-red-200"
+                                  title="Rejeter"
+                                >
+                                  <X size={14} />
+                                </button>
+                              </>
+                            )}
+                            <button
+                              onClick={() => {
+                                if (
+                                  confirm("Supprimer définitivement cet avis ?")
+                                ) {
+                                  const updatedReviews = data.reviews.filter(
+                                    (r) => r.id !== review.id,
+                                  );
+                                  saveData({ reviews: updatedReviews });
+                                  console.log(
+                                    "🗑️ Avis supprimé:",
+                                    review.clientName,
+                                  );
+                                }
+                              }}
+                              className="xp-button p-1 bg-gray-100 hover:bg-gray-200"
+                              title="Supprimer"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
         {activeTab === "recycle" && (
           <div className="space-y-4">
             {/* Toolbar */}
