@@ -60,25 +60,21 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
     // Validation anti-spam
     const validationErrors = [];
 
-    // Vérifier la longueur du nom (pas trop court, pas trop long)
     if (newReview.clientName.length < 2 || newReview.clientName.length > 50) {
       validationErrors.push("Le nom doit contenir entre 2 et 50 caractères");
     }
 
-    // Vérifier le format email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newReview.email)) {
       validationErrors.push("Format d'email invalide");
     }
 
-    // Vérifier la longueur du commentaire (éviter les spams courts ou trop longs)
     if (newReview.comment.length < 10 || newReview.comment.length > 1000) {
       validationErrors.push(
         "Le commentaire doit contenir entre 10 et 1000 caractères",
       );
     }
 
-    // Vérifier les mots interdits (spam/fake content)
     const forbiddenWords = [
       "fake",
       "spam",
@@ -97,7 +93,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       validationErrors.push("Contenu détecté comme spam");
     }
 
-    // Vérifier les doublons d'email (une seule review par email)
     const existingEmailReview = data.reviews.find(
       (r) => r.email === newReview.email,
     );
@@ -105,7 +100,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       validationErrors.push("Un avis existe déjà pour cette adresse email");
     }
 
-    // Vérifier les caractères répétitifs (anti-spam)
     if (/(.)\1{4,}/.test(newReview.comment)) {
       validationErrors.push(
         "Commentaire invalide (caractères répétitifs détectés)",
@@ -130,11 +124,9 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       adminNote: "En attente de validation manuelle",
     };
 
-    // Ajouter le nouvel avis
     const updatedReviews = [...data.reviews, review];
     saveData({ reviews: updatedReviews });
 
-    // Réinitialiser le formulaire
     setNewReview({ clientName: "", email: "", comment: "" });
     setRating(5);
     setIsSubmitting(false);
@@ -145,7 +137,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       review.clientName,
     );
 
-    // Masquer le message de succès après 3 secondes
     setTimeout(() => {
       setShowSuccess(false);
       setActiveTab("reviews");
@@ -334,7 +325,9 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
               ))
             )}
           </div>
-        ) : (
+        )}
+
+        {activeTab === "add" && (
           <div className="max-w-2xl mx-auto">
             {showSuccess ? (
               <motion.div
@@ -363,7 +356,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                 </h3>
 
                 <div className="space-y-6">
-                  {/* Nom */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Votre nom / Pseudonyme *
@@ -382,7 +374,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                     />
                   </div>
 
-                  {/* Email */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Email *
@@ -401,7 +392,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                     </p>
                   </div>
 
-                  {/* Note */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Votre note *
@@ -414,7 +404,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                     </div>
                   </div>
 
-                  {/* Commentaire */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Votre commentaire *
@@ -430,7 +419,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                     />
                   </div>
 
-                  {/* Bouton de soumission */}
                   <button
                     onClick={handleSubmitReview}
                     disabled={isSubmitting}
@@ -452,7 +440,9 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
               </div>
             )}
           </div>
-        ) : activeTab === "profile" ? (
+        )}
+
+        {activeTab === "profile" && (
           <div className="max-w-2xl mx-auto">
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-6">
@@ -460,7 +450,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
               </h3>
 
               <div className="space-y-6">
-                {/* Photo de profil actuelle */}
                 <div className="text-center">
                   <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-200 mb-4">
                     <img
@@ -468,14 +457,16 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                       alt="Photo de profil"
                       className="w-full h-full object-cover"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1";
+                        (e.target as HTMLImageElement).src =
+                          "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1";
                       }}
                     />
                   </div>
-                  <p className="text-sm text-gray-600">Photo de profil actuelle</p>
+                  <p className="text-sm text-gray-600">
+                    Photo de profil actuelle
+                  </p>
                 </div>
 
-                {/* Nom d'affichage */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Nom d'affichage
@@ -489,7 +480,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                   />
                 </div>
 
-                {/* URL Photo de profil */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     URL de la photo de profil
@@ -506,7 +496,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                   </p>
                 </div>
 
-                {/* Photos prédéfinies */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Ou choisissez une photo prédéfinie :
@@ -520,13 +509,14 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                       "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
                       "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
                       "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
-                      "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1"
+                      "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
                     ].map((url, index) => (
                       <button
                         key={index}
                         onClick={() => setNewProfilePic(url)}
                         className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all ${
-                          (newProfilePic || data.settings.profilePicture) === url
+                          (newProfilePic || data.settings.profilePicture) ===
+                          url
                             ? "border-blue-500 ring-2 ring-blue-200"
                             : "border-gray-300 hover:border-blue-400"
                         }`}
@@ -541,7 +531,6 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                   </div>
                 </div>
 
-                {/* Boutons d'action */}
                 <div className="flex gap-3">
                   <button
                     onClick={handleUpdateProfile}
@@ -563,7 +552,7 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
               </div>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
     </div>
   );
