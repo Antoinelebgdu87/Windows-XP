@@ -32,10 +32,12 @@ export const PortfolioContent = () => (
 
     <div className="space-y-3">
       <p className="text-sm leading-relaxed">
-        Créateur de contenu spécialisé dans l'univers Roblox avec plus d'1 million de vues
-        générées. En 2 ans d'expérience, j'ai développé une expertise unique dans le montage
-        vidéo gaming, particulièrement sur la plateforme Roblox.
+        Créateur de contenu spécialisé dans l'univers Roblox avec plus d'1
+        million de vues générées. En 2 ans d'expérience, j'ai développé une
+        expertise unique dans le montage vidéo gaming, particulièrement sur la
+        plateforme Roblox.
       </p>
+
       <div className="xp-panel">
         <h3 className="font-bold mb-2 flex items-center">
           <Award size={14} className="mr-2 text-yellow-600" />
@@ -76,6 +78,7 @@ export const PortfolioContent = () => (
           fonctionnent dans l'univers gaming."
         </p>
       </div>
+
       <div className="text-center">
         <button className="xp-button px-4 py-2 font-bold">
           Découvrir mes réalisations
@@ -109,7 +112,7 @@ export const VideosContent = () => (
           category: "Gaming",
           color: "bg-green-100",
           description: "Compilation virale - 250K vues",
-          views: "250K"
+          views: "250K",
         },
         {
           title: "Adopt Me Trading Tips & Tricks",
@@ -118,7 +121,7 @@ export const VideosContent = () => (
           category: "Tutorial",
           color: "bg-blue-100",
           description: "Guide complet pour traders débutants",
-          views: "180K"
+          views: "180K",
         },
         {
           title: "Roblox Horror Games Marathon",
@@ -127,7 +130,7 @@ export const VideosContent = () => (
           category: "Horror",
           color: "bg-red-100",
           description: "Compilation frissons garantis",
-          views: "320K"
+          views: "320K",
         },
         {
           title: "Building Challenge Mega Build",
@@ -136,7 +139,7 @@ export const VideosContent = () => (
           category: "Building",
           color: "bg-purple-100",
           description: "Construction créative en accéléré",
-          views: "190K"
+          views: "190K",
         },
         {
           title: "Roblox Funny Moments #15",
@@ -145,7 +148,7 @@ export const VideosContent = () => (
           category: "Comedy",
           color: "bg-yellow-100",
           description: "Compilation rires et fails épiques",
-          views: "275K"
+          views: "275K",
         },
         {
           title: "New Roblox Games to Try",
@@ -154,72 +157,7 @@ export const VideosContent = () => (
           category: "Review",
           color: "bg-orange-100",
           description: "Test et avis sur les nouveautés",
-          views: "165K"
-        },
-      ].map((video, index) => (
-  <div className="xp-text space-y-4">
-    <h2 className="text-lg font-bold text-red-800 flex items-center">
-      <span className="mr-2">🎬</span>
-      Portfolio Vidéo
-    </h2>
-
-    <div className="xp-panel bg-yellow-50">
-      <div className="text-sm flex items-center">
-        <span className="mr-2">💡</span>
-        <strong>Showreel disponible :</strong>
-        <button className="xp-button ml-2 text-xs">Visionner (3min)</button>
-      </div>
-    </div>
-
-    <div className="space-y-3">
-      {[
-        {
-          title: "Campagne Nike Air Max 2024",
-          duration: "30s",
-          year: "2024",
-          category: "Publicité",
-          color: "bg-red-100",
-          description: "Montage dynamique avec effets spéciaux",
-        },
-        {
-          title: "Clip - Artist Émergent",
-          duration: "3m45s",
-          year: "2024",
-          category: "Musical",
-          color: "bg-purple-100",
-          description: "Direction artistique et montage créatif",
-        },
-        {
-          title: "Documentaire 'Nature Urbaine'",
-          duration: "15min",
-          year: "2023",
-          category: "Documentaire",
-          color: "bg-green-100",
-          description: "Narration immersive et étalonnage naturel",
-        },
-        {
-          title: "Série Web 'Tech Stories'",
-          duration: "8min",
-          year: "2024",
-          category: "Corporate",
-          color: "bg-blue-100",
-          description: "Montage informatif et motion graphics",
-        },
-        {
-          title: "Mariage Premium",
-          duration: "4min",
-          year: "2024",
-          category: "Événementiel",
-          color: "bg-pink-100",
-          description: "Storytelling émotionnel et cinématique",
-        },
-        {
-          title: "Teaser Produit Innovation",
-          duration: "1m30s",
-          year: "2024",
-          category: "Commercial",
-          color: "bg-orange-100",
-          description: "Montage percutant et animations 3D",
+          views: "165K",
         },
       ].map((video, index) => (
         <div
@@ -248,7 +186,7 @@ export const VideosContent = () => (
         <strong>🎯 Projets sur mesure</strong>
         <br />
         <span className="text-xs">
-          Vous avez un projet spécifique ? Contactez-moi pour un devis
+          Vous avez un projet spécifique Roblox ? Contactez-moi pour un devis
           personnalisé.
         </span>
       </div>
@@ -265,7 +203,9 @@ export const SkillsContent = () => (
 
     <div className="space-y-3">
       <div className="xp-panel">
-        <h3 className="font-bold mb-3 text-blue-700">🎨 Logiciels de Montage Gaming</h3>
+        <h3 className="font-bold mb-3 text-blue-700">
+          🎨 Logiciels de Montage Gaming
+        </h3>
         <div className="space-y-2">
           {[
             { name: "Adobe Premiere Pro", level: 90, color: "bg-purple-500" },
@@ -288,6 +228,7 @@ export const SkillsContent = () => (
           ))}
         </div>
       </div>
+
       <div className="grid grid-cols-2 gap-3">
         <div className="xp-panel">
           <h3 className="font-bold mb-2 text-green-700">🎯 Gaming Expertise</h3>
@@ -302,7 +243,9 @@ export const SkillsContent = () => (
         </div>
 
         <div className="xp-panel">
-          <h3 className="font-bold mb-2 text-orange-700">🔧 Spécialités Roblox</h3>
+          <h3 className="font-bold mb-2 text-orange-700">
+            🔧 Spécialités Roblox
+          </h3>
           <div className="text-xs space-y-1">
             <div>• Capture gameplay HD</div>
             <div>• Montage rythme rapide</div>
@@ -334,10 +277,10 @@ export const SkillsContent = () => (
 
       <div className="text-center">
         <div className="text-xs text-gray-600 mb-2">
-          Mise à jour des compétences en continu
+          Spécialisé dans l'univers Roblox depuis 2022
         </div>
         <button className="xp-button px-4 py-1 text-xs">
-          Voir mes certifications
+          Voir mes résultats
         </button>
       </div>
     </div>
@@ -354,7 +297,9 @@ export const ContactContent = () => (
     <div className="xp-panel bg-green-50">
       <div className="flex items-center justify-center mb-3">
         <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-        <span className="font-bold text-green-700">Disponible pour nouveaux projets Roblox</span>
+        <span className="font-bold text-green-700">
+          Disponible pour nouveaux projets Roblox
+        </span>
       </div>
     </div>
 
@@ -383,6 +328,7 @@ export const ContactContent = () => (
           </div>
         </div>
       </div>
+
       <div className="grid grid-cols-2 gap-3">
         <div className="xp-panel">
           <h3 className="font-bold mb-2 text-purple-700">🌐 Réseaux</h3>
@@ -391,7 +337,9 @@ export const ContactContent = () => (
               <span>X (Twitter)</span>
               <button
                 className="xp-button text-xs"
-                onClick={() => window.open('https://x.com/LinolvtPro', '_blank')}
+                onClick={() =>
+                  window.open("https://x.com/LinolvtPro", "_blank")
+                }
               >
                 Suivre
               </button>
@@ -448,7 +396,7 @@ export const ContactContent = () => (
           📧 Envoyer un message
         </button>
         <div className="text-xs text-gray-600">
-          Ou appelez directement pour discuter de votre projet
+          Ou contactez-moi directement pour discuter de votre projet Roblox
         </div>
       </div>
     </div>
