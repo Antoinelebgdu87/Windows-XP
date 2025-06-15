@@ -6,8 +6,8 @@ import Desktop from "../components/WindowsXP/Desktop";
 import "../styles/windows-xp.css";
 
 const Index = () => {
-  const [showCMD, setShowCMD] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [showCMD, setShowCMD] = useState(false); // Désactivé par défaut
+  const [isLoading, setIsLoading] = useState(true); // Commencer directement par le loading XP
   const [showDesktop, setShowDesktop] = useState(false);
 
   const handleCMDComplete = () => {
