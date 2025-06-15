@@ -91,6 +91,13 @@ const Desktop: React.FC = () => {
       action: "open-computer",
     },
     {
+      id: "reviews",
+      label: "Avis",
+      icon: <MessageCircle size={32} className="text-purple-600" />,
+      position: { x: 530, y: 30 },
+      action: "open-reviews",
+    },
+    {
       id: "recycle",
       label: "Corbeille",
       icon: <Trash2 size={32} className="text-gray-500" />,
