@@ -12,11 +12,11 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
   const { playStartupSound } = useXPSounds();
 
   const loadingSteps = [
-    "Démarrage de Windows XP...",
-    "Chargement des pilotes système...",
-    "Initialisation des services...",
-    "Chargement du bureau...",
-    "Préparation de votre portfolio...",
+    "Démarrage de Microsoft Windows XP...",
+    "Chargement des pilotes de périphériques...",
+    "Initialisation des services système...",
+    "Configuration de l'interface utilisateur...",
+    "Préparation de l'environnement de travail...",
   ];
 
   useEffect(() => {
@@ -62,12 +62,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
       {/* Windows XP Logo */}
       <div className="mb-8">
         <div className="flex items-center space-x-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-red-500 via-yellow-500 to-green-500 rounded-lg flex items-center justify-center">
-            <div className="text-white font-bold text-xl">XP</div>
+          <div className="w-16 h-16 bg-gradient-to-br from-red-500 via-yellow-500 via-green-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="text-white font-bold text-2xl font-serif">⊞</div>
           </div>
           <div className="text-white">
-            <div className="text-2xl font-bold">Microsoft Windows XP</div>
-            <div className="text-sm opacity-80">Portfolio Edition</div>
+            <div className="text-3xl font-bold">Microsoft Windows XP</div>
+            <div className="text-lg opacity-90">Édition Professionnelle</div>
           </div>
         </div>
       </div>
