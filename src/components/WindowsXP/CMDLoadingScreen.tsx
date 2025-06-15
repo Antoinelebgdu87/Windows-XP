@@ -77,7 +77,6 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
       ); // Vitesse variable pour réalisme
 
       return () => clearTimeout(timer);
-    }
     } else {
       // Ligne terminée, passer à la suivante
       setTimeout(
@@ -85,7 +84,7 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
           setCurrentLineIndex((prev) => prev + 1);
           setCurrentChar(0);
         },
-        currentLine.includes("start windows_xp.exe") ? 1000 : 200,
+        currentLine.includes("portfolio.xp") ? 1000 : 200,
       );
     }
   }, [currentLineIndex, currentChar, cmdLines, onLoadingComplete]);
@@ -102,31 +101,49 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
   // Sons de frappe (simulés)
   useEffect(() => {
     if (currentChar > 0 && currentLineIndex < cmdLines.length) {
-      // Son de frappe de clavier
-      const audioContext = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
+      try {
+        // Son de frappe de clavier
+        const audioContext = new (window.AudioContext ||
+          (window as any).webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
 
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
 
-      oscillator.frequency.setValueAtTime(
-        800 + Math.random() * 200,
-        audioContext.currentTime,
-      );
-      oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(
+          800 + Math.random() * 200,
+          audioContext.currentTime,
+        );
+        oscillator.type = "square";
 
-      gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.001,
-        audioContext.currentTime + 0.1,
-      );
+        gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + 0.1,
+        );
 
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 0.1);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.1);
+      } catch (error) {
+        // Audio non supporté, ignorer silencieusement
+      }
     }
   }, [currentChar, currentLineIndex]);
+
+  const getLineColor = (line: string | undefined): string => {
+    if (!line) return "#00ff00";
+
+    if (line.includes("C:\\") && line.includes(">")) return "#00ff00";
+    if (line.includes(".exe")) return "#ffff00";
+    if (line.includes("<REP>")) return "#00ffff";
+    if (line.includes("fichier(s)") || line.includes("octets"))
+      return "#ffff00";
+    if (line.includes("Démarrage") || line.includes("Chargement"))
+      return "#ffffff";
+
+    return "#00ff00";
+  };
 
   return (
     <motion.div
@@ -164,37 +181,20 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
 
       {/* Contenu CMD */}
       <div className="p-4 flex-1 overflow-hidden">
-        {displayedLines
-          .filter((line) => line !== undefined)
-          .map((line, index) => (
-            <div
-              key={index}
-              className="whitespace-pre"
-              style={{
-                color:
-                  line && line.includes("C:\\") && line.includes(">")
-                    ? "#00ff00"
-                    : line && line.includes(".exe")
-                      ? "#ffff00"
-                      : line && line.includes("<REP>")
-                        ? "#00ffff"
-                        : line &&
-                            (line.includes("fichier(s)") ||
-                              line.includes("octets"))
-                          ? "#ffff00"
-                          : line &&
-                              (line.includes("Démarrage") ||
-                                line.includes("Chargement"))
-                            ? "#ffffff"
-                            : "#00ff00",
-              }}
-            >
-              {line || ""}
-              {index === currentLineIndex && showCursor && (
-                <span className="bg-green-400 text-black animate-pulse">_</span>
-              )}
-            </div>
-          ))}
+        {displayedLines.map((line, index) => (
+          <div
+            key={index}
+            className="whitespace-pre"
+            style={{
+              color: getLineColor(line),
+            }}
+          >
+            {line || ""}
+            {index === currentLineIndex && showCursor && (
+              <span className="bg-green-400 text-black animate-pulse">_</span>
+            )}
+          </div>
+        ))}
 
         {/* Curseur à la fin si toutes les lignes sont affichées */}
         {isComplete && showCursor && (
