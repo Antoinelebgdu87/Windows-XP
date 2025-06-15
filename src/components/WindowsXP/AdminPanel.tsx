@@ -420,7 +420,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     "Building",
                     "Review",
                   ].map((cat) => {
-                    const categoryVideos = videos.filter(
+                    const categoryVideos = data.videos.filter(
                       (v) => v.category === cat,
                     );
                     const totalViews = categoryVideos.reduce(
@@ -437,7 +437,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </div>
                 <div>
                   <h4 className="font-bold mb-3">Vidéos les plus vues</h4>
-                  {videos
+                  {data.videos
                     .sort((a, b) => b.views - a.views)
                     .slice(0, 3)
                     .map((video) => (
