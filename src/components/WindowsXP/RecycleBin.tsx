@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { FileText, Image, Folder, X, Video, Plus, Upload } from "lucide-react";
+import { motion } from "framer-motion";
+import { FileText, Image, Folder, X, Video } from "lucide-react";
 import {
   useRecycleBin,
   RecycleBinItem,
@@ -13,23 +13,8 @@ interface RecycleBinProps {
 const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [viewingItem, setViewingItem] = useState<RecycleBinItem | null>(null);
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newFile, setNewFile] = useState<Partial<RecycleBinItem>>({
-    name: "",
-    type: "image",
-    size: "",
-    content: "",
-    originalPath: "C:\\Users\\Monteur\\Images",
-    imageUrl: "",
-  });
 
-  const {
-    items: recycleBinItems,
-    addItem,
-    removeItem,
-    restoreItem,
-    clearAll,
-  } = useRecycleBin();
+  const { items: recycleBinItems } = useRecycleBin();
 
   const handleItemClick = (item: RecycleBinItem) => {
     setSelectedItem(item.id);
@@ -65,76 +50,6 @@ const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
       ...recycleBinItems.find((item) => item.content === content)!,
     });
   };
-
-  const handleRestore = () => {
-    if (selectedItem) {
-      restoreItem(selectedItem);
-      setSelectedItem(null);
-    }
-  };
-
-  const handleDelete = () => {
-    if (selectedItem && confirm("Supprimer définitivement ce fichier ?")) {
-      removeItem(selectedItem);
-      setSelectedItem(null);
-    }
-  };
-
-  const handleClearAll = () => {
-    if (confirm("Vider complètement la corbeille ?")) {
-      clearAll();
-      setSelectedItem(null);
-    }
-  };
-
-  const handleAddFile = () => {
-    if (!newFile.name || !newFile.size) return;
-
-    const file: Omit<RecycleBinItem, "id" | "dateDeleted"> = {
-      name: newFile.name,
-      type: (newFile.type as RecycleBinItem["type"]) || "image",
-      size: newFile.size,
-      content: newFile.content || "",
-      originalPath: newFile.originalPath || "C:\\Users\\Monteur\\Images",
-      imageUrl: newFile.type === "image" ? newFile.imageUrl : undefined,
-      videoUrl: newFile.type === "video" ? newFile.videoUrl : undefined,
-    };
-
-    addItem(file);
-    setNewFile({
-      name: "",
-      type: "image",
-      size: "",
-      content: "",
-      originalPath: "C:\\Users\\Monteur\\Images",
-      imageUrl: "",
-    });
-    setShowAddModal(false);
-  };
-
-  // Quelques URLs d'images populaires comme suggestions
-  const sampleImages = [
-    {
-      name: "paysage.jpg",
-      url: "https://images.pexels.com/photos/2662116/pexels-photo-2662116.jpeg",
-      size: "3.2 Mo",
-    },
-    {
-      name: "city.jpg",
-      url: "https://images.pexels.com/photos/1519088/pexels-photo-1519088.jpeg",
-      size: "2.8 Mo",
-    },
-    {
-      name: "nature.jpg",
-      url: "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg",
-      size: "4.1 Mo",
-    },
-    {
-      name: "sunset.jpg",
-      url: "https://images.pexels.com/photos/1431822/pexels-photo-1431822.jpeg",
-      size: "3.5 Mo",
-    },
-  ];
 
   if (viewingItem) {
     return (
@@ -245,44 +160,19 @@ const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
           <span className="mr-2">🗑️</span>
           Corbeille
         </h3>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={() => setShowAddModal(true)}
-            className="xp-button text-xs px-3 py-1 bg-green-100 flex items-center space-x-1"
-          >
-            <Plus size={12} />
-            <span>Ajouter</span>
-          </button>
-          <div className="text-xs text-gray-600">
-            {recycleBinItems.length} élément(s)
-          </div>
+        <div className="text-xs text-gray-600">
+          {recycleBinItems.length} élément(s)
         </div>
       </div>
 
-      {/* Toolbar */}
-      <div className="xp-panel p-2 text-xs">
-        <div className="flex space-x-4">
-          <button
-            className={`xp-button text-xs px-3 py-1 ${!selectedItem ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={handleRestore}
-            disabled={!selectedItem}
-          >
-            Restaurer
-          </button>
-          <button
-            className={`xp-button text-xs px-3 py-1 ${!selectedItem ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={handleDelete}
-            disabled={!selectedItem}
-          >
-            Supprimer définitivement
-          </button>
-          <button
-            className={`xp-button text-xs px-3 py-1 ${recycleBinItems.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
-            onClick={handleClearAll}
-            disabled={recycleBinItems.length === 0}
-          >
-            Vider la corbeille
-          </button>
+      {/* Info Panel - Lecture seule */}
+      <div className="xp-panel p-3 text-xs bg-yellow-50 border-yellow-200">
+        <div className="flex items-center space-x-2">
+          <div className="text-yellow-700">ℹ️</div>
+          <div>
+            <strong>Mode lecture seule</strong> - Pour gérer la corbeille
+            (ajouter, supprimer, vider), utilisez le panneau d'administration.
+          </div>
         </div>
       </div>
 
@@ -294,13 +184,10 @@ const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
               <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
                 <Image size={32} className="text-gray-400" />
               </div>
-              <p className="mb-4">La corbeille est vide</p>
-              <button
-                onClick={() => setShowAddModal(true)}
-                className="xp-button px-4 py-2 bg-blue-100"
-              >
-                Ajouter des fichiers
-              </button>
+              <p className="mb-2">La corbeille est vide</p>
+              <p className="text-xs text-gray-400">
+                Utilisez le panneau d'administration pour ajouter des fichiers
+              </p>
             </div>
           </div>
         ) : (
@@ -366,195 +253,9 @@ const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
 
       {/* Instructions */}
       <div className="text-xs text-gray-600 italic">
-        💡 Sélectionnez un fichier et utilisez les boutons ci-dessus •
-        Double-cliquez pour ouvrir
+        💡 Double-cliquez sur un élément pour l'ouvrir • Gestion complète
+        disponible dans le panneau d'administration
       </div>
-
-      {/* Add File Modal */}
-      <AnimatePresence>
-        {showAddModal && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[300]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white rounded-lg shadow-2xl w-full max-w-lg"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <div className="bg-blue-600 text-white p-4 rounded-t-lg">
-                <h3 className="font-bold flex items-center">
-                  <Upload size={20} className="mr-2" />
-                  Ajouter un fichier à la corbeille
-                </h3>
-              </div>
-
-              <div className="p-6 space-y-4">
-                <div>
-                  <label className="block font-bold mb-2">
-                    Type de fichier
-                  </label>
-                  <select
-                    value={newFile.type}
-                    onChange={(e) =>
-                      setNewFile({
-                        ...newFile,
-                        type: e.target.value as RecycleBinItem["type"],
-                      })
-                    }
-                    className="w-full p-2 border rounded text-sm"
-                  >
-                    <option value="image">🖼️ Image</option>
-                    <option value="text">📄 Document texte</option>
-                    <option value="video">🎬 Vidéo</option>
-                    <option value="folder">📁 Dossier</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block font-bold mb-1">
-                      Nom du fichier *
-                    </label>
-                    <input
-                      type="text"
-                      value={newFile.name}
-                      onChange={(e) =>
-                        setNewFile({ ...newFile, name: e.target.value })
-                      }
-                      className="w-full p-2 border rounded text-sm"
-                      placeholder="mon_fichier.jpg"
-                    />
-                  </div>
-                  <div>
-                    <label className="block font-bold mb-1">Taille *</label>
-                    <input
-                      type="text"
-                      value={newFile.size}
-                      onChange={(e) =>
-                        setNewFile({ ...newFile, size: e.target.value })
-                      }
-                      className="w-full p-2 border rounded text-sm"
-                      placeholder="2.5 Mo"
-                    />
-                  </div>
-                </div>
-
-                {newFile.type === "image" && (
-                  <>
-                    <div>
-                      <label className="block font-bold mb-1">
-                        URL de l'image *
-                      </label>
-                      <input
-                        type="url"
-                        value={newFile.imageUrl}
-                        onChange={(e) =>
-                          setNewFile({ ...newFile, imageUrl: e.target.value })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                        placeholder="https://images.pexels.com/..."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-bold mb-2">
-                        Ou choisir parmi ces images :
-                      </label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {sampleImages.map((img, index) => (
-                          <button
-                            key={index}
-                            onClick={() => {
-                              setNewFile({
-                                ...newFile,
-                                name: img.name,
-                                imageUrl: img.url,
-                                size: img.size,
-                              });
-                            }}
-                            className="p-2 border rounded hover:bg-blue-50 text-left text-xs"
-                          >
-                            <div className="font-medium">{img.name}</div>
-                            <div className="text-gray-600">{img.size}</div>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {newFile.type === "text" && (
-                  <div>
-                    <label className="block font-bold mb-1">
-                      Contenu du fichier
-                    </label>
-                    <textarea
-                      value={newFile.content}
-                      onChange={(e) =>
-                        setNewFile({ ...newFile, content: e.target.value })
-                      }
-                      className="w-full p-2 border rounded text-sm h-24"
-                      placeholder="Contenu du document..."
-                    />
-                  </div>
-                )}
-
-                {newFile.type === "video" && (
-                  <div>
-                    <label className="block font-bold mb-1">
-                      URL de la vidéo
-                    </label>
-                    <input
-                      type="url"
-                      value={newFile.videoUrl}
-                      onChange={(e) =>
-                        setNewFile({ ...newFile, videoUrl: e.target.value })
-                      }
-                      className="w-full p-2 border rounded text-sm"
-                      placeholder="https://..."
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <label className="block font-bold mb-1">
-                    Emplacement original
-                  </label>
-                  <input
-                    type="text"
-                    value={newFile.originalPath}
-                    onChange={(e) =>
-                      setNewFile({ ...newFile, originalPath: e.target.value })
-                    }
-                    className="w-full p-2 border rounded text-sm"
-                    placeholder="C:\Users\Monteur\Images"
-                  />
-                </div>
-              </div>
-
-              <div className="p-4 border-t flex justify-end space-x-2">
-                <button
-                  onClick={() => setShowAddModal(false)}
-                  className="xp-button px-4 py-2"
-                >
-                  Annuler
-                </button>
-                <button
-                  onClick={handleAddFile}
-                  className="xp-button px-4 py-2 bg-blue-100"
-                  disabled={!newFile.name || !newFile.size}
-                >
-                  Ajouter
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
