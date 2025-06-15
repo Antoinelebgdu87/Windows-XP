@@ -219,10 +219,25 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
       <div className="bg-white border-b border-gray-200 p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
-            <MessageCircle className="text-blue-600" size={24} />
-            <h2 className="text-xl font-semibold text-gray-800">
-              Avis Clients - Lino LVT
-            </h2>
+            <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-200">
+              <img
+                src={data.settings.profilePicture}
+                alt={data.settings.displayName}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src =
+                    "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1";
+                }}
+              />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800">
+                Avis Clients - {data.settings.displayName}
+              </h2>
+              <p className="text-sm text-gray-600">
+                Monteur Vidéo Professionnel
+              </p>
+            </div>
           </div>
           {approvedReviews.length > 0 && (
             <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-lg">
