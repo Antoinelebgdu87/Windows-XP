@@ -64,6 +64,10 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
         () => {
           setDisplayedLines((prev) => {
             const newLines = [...prev];
+            // S'assurer que le tableau a la bonne taille
+            while (newLines.length <= currentLineIndex) {
+              newLines.push("");
+            }
             newLines[currentLineIndex] = currentLine.substring(0, currentChar);
             return newLines;
           });
@@ -73,6 +77,7 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
       ); // Vitesse variable pour réalisme
 
       return () => clearTimeout(timer);
+    }
     } else {
       // Ligne terminée, passer à la suivante
       setTimeout(
