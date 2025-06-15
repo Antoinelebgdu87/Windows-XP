@@ -1,41 +1,43 @@
+import React, { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
+import LoadingScreen from "../components/WindowsXP/LoadingScreen";
+import Desktop from "../components/WindowsXP/Desktop";
+import "../styles/windows-xp.css";
+
 const Index = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [showDesktop, setShowDesktop] = useState(false);
+
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
+    // Small delay to show transition
+    setTimeout(() => {
+      setShowDesktop(true);
+    }, 500);
+  };
+
+  // Prevent scrolling when the portfolio is active
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200">
-      <div className="text-center">
-        {/* TODO: replace everything here with the actual app! */}
-        <h1 className="text-2xl font-semibold text-slate-800 flex items-center justify-center gap-3">
-          <svg
-            className="animate-spin h-8 w-8 text-slate-400"
-            viewBox="0 0 50 50"
-          >
-            <circle
-              className="opacity-30"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-            />
-            <circle
-              className="text-slate-600"
-              cx="25"
-              cy="25"
-              r="20"
-              stroke="currentColor"
-              strokeWidth="5"
-              fill="none"
-              strokeDasharray="100"
-              strokeDashoffset="75"
-            />
-          </svg>
-          Generating your app...
-        </h1>
-        <p className="mt-4 text-slate-600 max-w-md">
-          Watch the chat on the left for updates that might need your attention
-          to finish generating
-        </p>
-      </div>
+    <div className="w-full h-screen overflow-hidden xp-font">
+      <AnimatePresence mode="wait">
+        {isLoading && (
+          <LoadingScreen
+            key="loading"
+            onLoadingComplete={handleLoadingComplete}
+          />
+        )}
+        {showDesktop && <Desktop key="desktop" />}
+      </AnimatePresence>
     </div>
   );
 };
