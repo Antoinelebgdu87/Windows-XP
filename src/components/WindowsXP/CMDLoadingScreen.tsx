@@ -53,7 +53,7 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
       setIsComplete(true);
       setTimeout(() => {
         onLoadingComplete();
-      }, 2000);
+      }, 700);
       return;
     }
 
