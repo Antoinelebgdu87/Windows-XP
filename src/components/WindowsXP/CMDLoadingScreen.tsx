@@ -159,32 +159,37 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
 
       {/* Contenu CMD */}
       <div className="p-4 flex-1 overflow-hidden">
-        {displayedLines.map((line, index) => (
-          <div
-            key={index}
-            className="whitespace-pre"
-            style={{
-              color:
-                line.includes("C:\\") && line.includes(">")
-                  ? "#00ff00"
-                  : line.includes(".exe")
-                    ? "#ffff00"
-                    : line.includes("<REP>")
-                      ? "#00ffff"
-                      : line.includes("fichier(s)") || line.includes("octets")
-                        ? "#ffff00"
-                        : line.includes("Démarrage") ||
-                            line.includes("Chargement")
-                          ? "#ffffff"
-                          : "#00ff00",
-            }}
-          >
-            {line}
-            {index === currentLineIndex && showCursor && (
-              <span className="bg-green-400 text-black animate-pulse">_</span>
-            )}
-          </div>
-        ))}
+        {displayedLines
+          .filter((line) => line !== undefined)
+          .map((line, index) => (
+            <div
+              key={index}
+              className="whitespace-pre"
+              style={{
+                color:
+                  line && line.includes("C:\\") && line.includes(">")
+                    ? "#00ff00"
+                    : line && line.includes(".exe")
+                      ? "#ffff00"
+                      : line && line.includes("<REP>")
+                        ? "#00ffff"
+                        : line &&
+                            (line.includes("fichier(s)") ||
+                              line.includes("octets"))
+                          ? "#ffff00"
+                          : line &&
+                              (line.includes("Démarrage") ||
+                                line.includes("Chargement"))
+                            ? "#ffffff"
+                            : "#00ff00",
+              }}
+            >
+              {line || ""}
+              {index === currentLineIndex && showCursor && (
+                <span className="bg-green-400 text-black animate-pulse">_</span>
+              )}
+            </div>
+          ))}
 
         {/* Curseur à la fin si toutes les lignes sont affichées */}
         {isComplete && showCursor && (
