@@ -106,7 +106,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     setNewVideo({
       title: "",
       description: "",
-      category: "Gaming",
+      category: "Motion Design",
       thumbnail: "",
       url: "",
       views: 0,
