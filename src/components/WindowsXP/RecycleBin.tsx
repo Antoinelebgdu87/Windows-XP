@@ -41,7 +41,7 @@ const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
 
   const handleTextFileOpen = (content: string) => {
     // Vérifier si ce sont les identifiants admin factices
-    if (content.includes("Admin12") && content.includes("Baka32")) {
+    if (content.includes("Admin") && content.includes("Baka")) {
       // Rickroll !
       window.open("https://www.youtube.com/watch?v=xvFZjo5PgG0", "_blank");
       return;
