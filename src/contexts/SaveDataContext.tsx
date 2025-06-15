@@ -133,7 +133,7 @@ const defaultData: SavedData = {
       name: "admin_credentials.txt",
       type: "text",
       content:
-        "Admin12: Baka32\nPassword: FakePassword123\nNote: These are fake credentials for demo purposes.",
+        "Admin: Baka\nPassword: FakePassword123\nNote: These are fake credentials for demo purposes.",
       dateDeleted: "2025-01-18",
     },
     {
