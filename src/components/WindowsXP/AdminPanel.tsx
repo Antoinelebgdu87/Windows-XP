@@ -32,18 +32,6 @@ interface AdminPanelProps {
   onClose: () => void;
 }
 
-interface VideoProject {
-  id: string;
-  title: string;
-  duration: string;
-  year: string;
-  category: string;
-  description: string;
-  status: "published" | "draft" | "archived";
-  views: number;
-  lastModified: string;
-}
-
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const {
     data,
@@ -53,6 +41,12 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     isAutoSaveEnabled,
     toggleAutoSave,
   } = useSaveData();
+  const {
+    items: recycleBinItems,
+    addItem,
+    removeItem,
+    clearAll,
+  } = useRecycleBin();
 
   const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
   const [isCreating, setIsCreating] = useState(false);
@@ -78,20 +72,15 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     console.log(`📊 Admin Panel: ${data.videos.length} vidéos chargées`);
   }, [data.videos]);
 
-  // Gestion de la corbeille
-  const {
-    items: recycleBinItems,
-    addItem,
-    removeItem,
-    clearAll,
-  } = useRecycleBin();
   const [isAddingFile, setIsAddingFile] = useState(false);
-  const [newFile, setNewFile] = useState<Partial<RecycleBinItem>>({
+  const [newFile, setNewFile] = useState({
     name: "",
-    type: "text",
+    type: "text" as RecycleBinItem["type"],
     size: "",
     content: "",
     originalPath: "",
+    imageUrl: "",
+    videoUrl: "",
   });
 
   const handleCreateVideo = () => {
@@ -184,7 +173,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
 
     const file: Omit<RecycleBinItem, "id" | "dateDeleted"> = {
       name: newFile.name,
-      type: (newFile.type as RecycleBinItem["type"]) || "text",
+      type: newFile.type,
       size: newFile.size,
       content: newFile.content || "",
       originalPath: newFile.originalPath || "C:\\Temp",
@@ -199,6 +188,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
       size: "",
       content: "",
       originalPath: "",
+      imageUrl: "",
+      videoUrl: "",
     });
     setIsAddingFile(false);
   };
@@ -215,42 +206,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     }
   };
 
-  const getStatusColor = (status: VideoProject["status"]) => {
-    switch (status) {
-      case "published":
-        return "bg-green-100 text-green-800";
-      case "draft":
-        return "bg-yellow-100 text-yellow-800";
-      case "archived":
-        return "bg-gray-100 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getStatusLabel = (status: VideoProject["status"]) => {
-    switch (status) {
-      case "published":
-        return "Publié";
-      case "draft":
-        return "Brouillon";
-      case "archived":
-        return "Archivé";
-      default:
-        return "Inconnu";
-    }
-  };
-
-  const getFileIcon = (type: string) => {
+  const getFileIcon = (type: RecycleBinItem["type"]) => {
     switch (type) {
       case "image":
         return <Image size={16} className="text-blue-600" />;
-      case "text":
-        return <FileText size={16} className="text-gray-600" />;
-      case "folder":
-        return <Folder size={16} className="text-yellow-600" />;
       case "video":
         return <Video size={16} className="text-red-600" />;
+      case "folder":
+        return <Folder size={16} className="text-yellow-600" />;
       default:
         return <FileText size={16} className="text-gray-600" />;
     }
@@ -313,47 +276,28 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
               </button>
             </div>
 
-            {/* Header */}
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-bold">Gestion des Avis Clients</h3>
-              <div className="flex items-center gap-2">
-                <div className="text-sm text-gray-600">
-                  Auto-sauvegarde: {isAutoSaveEnabled ? "🟢 Activée" : "🔴 Désactivée"}
+            {/* Stats */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {data.videos.length}
                 </div>
-                <button
-                  onClick={() => {
-                    if (confirm("Supprimer tous les avis en attente ?")) {
-                      const updatedReviews = data.reviews.filter(r => r.status !== "pending");
-                      saveData({ reviews: updatedReviews });
-                      console.log("🧹 Avis en attente supprimés");
-                    }
-                  }}
-                  className="xp-button px-3 py-1 text-sm bg-orange-100"
-                  disabled={data.reviews.filter(r => r.status === "pending").length === 0}
-                >
-                  Supprimer En Attente
-                </button>
-                <button
-                  onClick={() => {
-                    if (confirm("Supprimer tous les avis rejetés ?")) {
-                      const updatedReviews = data.reviews.filter(r => r.status !== "rejected");
-                      saveData({ reviews: updatedReviews });
-                      console.log("🗑️ Avis rejetés supprimés");
-                    }
-                  }}
-                  className="xp-button px-3 py-1 text-sm bg-red-100"
-                  disabled={data.reviews.filter(r => r.status === "rejected").length === 0}
-                >
-                  Nettoyer Rejetés
-                </button>
-                <button
-                  onClick={toggleAutoSave}
-                  className="xp-button px-3 py-1 text-sm"
-                >
-                  {isAutoSaveEnabled ? "Désactiver" : "Activer"} Auto-save
-                </button>
+                <div className="text-xs text-gray-600">Publiées</div>
               </div>
-            </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-yellow-600">
+                  {data.videos.filter((v) => v.date).length}
+                </div>
+                <div className="text-xs text-gray-600">Créations</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {data.videos.reduce((acc, v) => acc + v.views, 0)}
+                </div>
+                <div className="text-xs text-gray-600">Vues totales</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-purple-600">
                   {data.videos.reduce((acc, v) => acc + v.likes, 0)}
                 </div>
                 <div className="text-xs text-gray-600">Likes totaux</div>
@@ -368,10 +312,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     <tr>
                       <th className="text-left p-3">Titre</th>
                       <th className="text-left p-3">Catégorie</th>
-                      <th className="text-left p-3">Durée</th>
-                      <th className="text-left p-3">Statut</th>
                       <th className="text-left p-3">Vues</th>
-                      <th className="text-left p-3">Modifié</th>
+                      <th className="text-left p-3">Likes</th>
+                      <th className="text-left p-3">Date</th>
                       <th className="text-left p-3">Actions</th>
                     </tr>
                   </thead>
@@ -381,40 +324,37 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         <td className="p-3">
                           <div>
                             <div className="font-medium">{video.title}</div>
-                            <div className="text-gray-600 text-xs">
+                            <div className="text-gray-600 text-xs truncate max-w-xs">
                               {video.description}
                             </div>
                           </div>
                         </td>
                         <td className="p-3">
-                          <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
+                          <span className="px-2 py-1 rounded text-xs bg-blue-100 text-blue-800">
                             {video.category}
                           </span>
                         </td>
-                        <td className="p-3">{video.duration}</td>
-                        <td className="p-3">
-                          <span
-                            className={`px-2 py-1 rounded text-xs ${getStatusColor(video.status)}`}
-                          >
-                            {getStatusLabel(video.status)}
-                          </span>
+                        <td className="p-3 font-medium">
+                          {video.views.toLocaleString()}
                         </td>
-                        <td className="p-3">{video.views.toLocaleString()}</td>
-                        <td className="p-3 text-gray-600">
-                          {video.lastModified}
+                        <td className="p-3 font-medium">
+                          {video.likes.toLocaleString()}
+                        </td>
+                        <td className="p-3 text-xs text-gray-600">
+                          {video.date}
                         </td>
                         <td className="p-3">
-                          <div className="flex space-x-2">
+                          <div className="flex space-x-1">
                             <button
                               onClick={() => handleEditVideo(video)}
-                              className="text-blue-600 hover:bg-blue-100 p-1 rounded"
+                              className="xp-button p-1 bg-blue-100 hover:bg-blue-200"
                               title="Modifier"
                             >
                               <Edit size={14} />
                             </button>
                             <button
                               onClick={() => handleDeleteVideo(video.id)}
-                              className="text-red-600 hover:bg-red-100 p-1 rounded"
+                              className="xp-button p-1 bg-red-100 hover:bg-red-200"
                               title="Supprimer"
                             >
                               <Trash2 size={14} />
@@ -482,11 +422,47 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             {/* Header */}
             <div className="flex justify-between items-center">
               <h3 className="text-lg font-bold">Gestion des Avis Clients</h3>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
                 <div className="text-sm text-gray-600">
                   Auto-sauvegarde:{" "}
                   {isAutoSaveEnabled ? "🟢 Activée" : "🔴 Désactivée"}
                 </div>
+                <button
+                  onClick={() => {
+                    if (confirm("Supprimer tous les avis en attente ?")) {
+                      const updatedReviews = data.reviews.filter(
+                        (r) => r.status !== "pending",
+                      );
+                      saveData({ reviews: updatedReviews });
+                      console.log("🧹 Avis en attente supprimés");
+                    }
+                  }}
+                  className="xp-button px-3 py-1 text-sm bg-orange-100"
+                  disabled={
+                    data.reviews.filter((r) => r.status === "pending")
+                      .length === 0
+                  }
+                >
+                  Supprimer En Attente
+                </button>
+                <button
+                  onClick={() => {
+                    if (confirm("Supprimer tous les avis rejetés ?")) {
+                      const updatedReviews = data.reviews.filter(
+                        (r) => r.status !== "rejected",
+                      );
+                      saveData({ reviews: updatedReviews });
+                      console.log("🗑️ Avis rejetés supprimés");
+                    }
+                  }}
+                  className="xp-button px-3 py-1 text-sm bg-red-100"
+                  disabled={
+                    data.reviews.filter((r) => r.status === "rejected")
+                      .length === 0
+                  }
+                >
+                  Nettoyer Rejetés
+                </button>
                 <button
                   onClick={toggleAutoSave}
                   className="xp-button px-3 py-1 text-sm"
@@ -495,6 +471,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </button>
               </div>
             </div>
+
+            {/* Anti-Spam Tools */}
+            <ReviewModerationTools
+              reviews={data.reviews}
+              onUpdateReviews={(updatedReviews) =>
+                saveData({ reviews: updatedReviews })
+              }
+            />
 
             {/* Stats */}
             <div className="grid grid-cols-4 gap-4 mb-6">
@@ -523,8 +507,11 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         data.reviews
                           .filter((r) => r.status === "approved")
                           .reduce((sum, r) => sum + r.rating, 0) /
-                        data.reviews.filter((r) => r.status === "approved")
-                          .length
+                        Math.max(
+                          data.reviews.filter((r) => r.status === "approved")
+                            .length,
+                          1,
+                        )
                       ).toFixed(1)
                     : "0.0"}
                 </div>
@@ -683,525 +670,48 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         )}
 
-        {activeTab === "recycle" && (
-          <div className="space-y-4">
-            {/* Toolbar */}
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-bold">Gestion de la Corbeille</h3>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => setIsAddingFile(true)}
-                  className="xp-button px-4 py-2 bg-green-100 flex items-center space-x-2"
-                >
-                  <Plus size={16} />
-                  <span>Ajouter un fichier</span>
-                </button>
-                <button
-                  onClick={handleClearRecycleBin}
-                  className="xp-button px-4 py-2 bg-red-100 flex items-center space-x-2"
-                  disabled={recycleBinItems.length === 0}
-                >
-                  <Trash2 size={16} />
-                  <span>Vider la corbeille</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-4 gap-4 mb-6">
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-blue-600">
-                  {
-                    recycleBinItems.filter((item) => item.type === "image")
-                      .length
-                  }
-                </div>
-                <div className="text-xs text-gray-600">Images</div>
-              </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-green-600">
-                  {
-                    recycleBinItems.filter((item) => item.type === "text")
-                      .length
-                  }
-                </div>
-                <div className="text-xs text-gray-600">Documents</div>
-              </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-red-600">
-                  {
-                    recycleBinItems.filter((item) => item.type === "video")
-                      .length
-                  }
-                </div>
-                <div className="text-xs text-gray-600">Vidéos</div>
-              </div>
-              <div className="xp-panel p-3 text-center">
-                <div className="text-2xl font-bold text-purple-600">
-                  {recycleBinItems.length}
-                </div>
-                <div className="text-xs text-gray-600">Total</div>
-              </div>
-            </div>
-
-            {/* File List */}
-            <div className="xp-panel">
-              {recycleBinItems.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
-                  <Trash2 size={48} className="mx-auto mb-4 opacity-50" />
-                  <p>La corbeille est vide</p>
-                </div>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="text-left p-3">Nom</th>
-                        <th className="text-left p-3">Type</th>
-                        <th className="text-left p-3">Taille</th>
-                        <th className="text-left p-3">Emplacement original</th>
-                        <th className="text-left p-3">Date suppression</th>
-                        <th className="text-left p-3">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {recycleBinItems.map((item) => (
-                        <tr key={item.id} className="border-b hover:bg-gray-50">
-                          <td className="p-3">
-                            <div className="flex items-center space-x-2">
-                              {getFileIcon(item.type)}
-                              <span>{item.name}</span>
-                            </div>
-                          </td>
-                          <td className="p-3">
-                            <span className="capitalize">
-                              {item.type === "image"
-                                ? "Image"
-                                : item.type === "text"
-                                  ? "Document"
-                                  : item.type === "video"
-                                    ? "Vidéo"
-                                    : "Autre"}
-                            </span>
-                          </td>
-                          <td className="p-3">{item.size}</td>
-                          <td className="p-3 text-gray-600">
-                            {item.originalPath || "Inconnu"}
-                          </td>
-                          <td className="p-3 text-gray-600">
-                            {item.dateDeleted}
-                          </td>
-                          <td className="p-3">
-                            <button
-                              onClick={() => handleDeleteFromRecycle(item.id)}
-                              className="text-red-600 hover:bg-red-100 p-1 rounded"
-                              title="Supprimer définitivement"
-                            >
-                              <X size={14} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
         {activeTab === "settings" && (
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">Paramètres</h3>
-            <div className="xp-panel p-4 space-y-4">
-              <div>
-                <label className="block font-bold mb-2">Nom du Portfolio</label>
-                <input
-                  type="text"
-                  defaultValue="lino.lvt - Portfolio Roblox"
-                  className="w-full p-2 border rounded"
-                />
+            <h3 className="text-lg font-bold">Paramètres & Sauvegarde</h3>
+
+            <div className="xp-panel p-4">
+              <h4 className="font-semibold mb-4">Gestion des Données</h4>
+              <div className="flex gap-4">
+                <button
+                  onClick={handleExportData}
+                  className="xp-button px-4 py-2 bg-blue-100 flex items-center gap-2"
+                >
+                  <Download size={16} />
+                  Exporter Sauvegarde
+                </button>
+                <label className="xp-button px-4 py-2 bg-green-100 flex items-center gap-2 cursor-pointer">
+                  <Upload size={16} />
+                  Importer Sauvegarde
+                  <input
+                    type="file"
+                    accept=".json"
+                    onChange={handleImportData}
+                    className="hidden"
+                  />
+                </label>
+                <button
+                  onClick={toggleAutoSave}
+                  className={`xp-button px-4 py-2 flex items-center gap-2 ${
+                    isAutoSaveEnabled ? "bg-green-100" : "bg-gray-100"
+                  }`}
+                >
+                  <RefreshCw size={16} />
+                  Auto-save: {isAutoSaveEnabled ? "ON" : "OFF"}
+                </button>
               </div>
-              <div>
-                <label className="block font-bold mb-2">Email de Contact</label>
-                <input
-                  type="email"
-                  defaultValue="linolvt.pro@gmail.com"
-                  className="w-full p-2 border rounded"
-                />
-              </div>
-              <div>
-                <label className="block font-bold mb-2">Description</label>
-                <textarea
-                  defaultValue="Monteur vidéo spécialisé Roblox - +1M vues générées - 2 ans d'expérience"
-                  className="w-full p-2 border rounded h-20"
-                />
-              </div>
-              <button className="xp-button px-4 py-2 bg-blue-100">
-                Sauvegarder les paramètres
-              </button>
+              <p className="text-sm text-gray-600 mt-3">
+                Dernière sauvegarde:{" "}
+                {new Date(data.lastSaved).toLocaleString("fr-FR")}
+              </p>
             </div>
           </div>
         )}
       </div>
-
-      {/* Create/Edit Modal */}
-      <AnimatePresence>
-        {(isCreating || editingVideo || isAddingFile) && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[300]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <motion.div
-              className="bg-white rounded-lg shadow-2xl w-full max-w-md"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
-              <div className="bg-blue-600 text-white p-4 rounded-t-lg">
-                <h3 className="font-bold">
-                  {isAddingFile
-                    ? "Ajouter un fichier à la corbeille"
-                    : isCreating
-                      ? "Nouvelle Vidéo"
-                      : "Modifier la Vidéo"}
-                </h3>
-              </div>
-
-              <div className="p-4 space-y-4">
-                {isAddingFile ? (
-                  <>
-                    <div>
-                      <label className="block font-bold mb-1">
-                        Nom du fichier *
-                      </label>
-                      <input
-                        type="text"
-                        value={newFile.name || ""}
-                        onChange={(e) =>
-                          setNewFile({ ...newFile, name: e.target.value })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                        placeholder="exemple.txt"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-bold mb-1">
-                          Type de fichier
-                        </label>
-                        <select
-                          value={newFile.type || "text"}
-                          onChange={(e) =>
-                            setNewFile({
-                              ...newFile,
-                              type: e.target.value as RecycleBinItem["type"],
-                            })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                        >
-                          <option value="text">Document texte</option>
-                          <option value="image">Image</option>
-                          <option value="video">Vidéo</option>
-                          <option value="folder">Dossier</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block font-bold mb-1">Taille *</label>
-                        <input
-                          type="text"
-                          value={newFile.size || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, size: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                          placeholder="2.5 Mo"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block font-bold mb-1">
-                        Emplacement original
-                      </label>
-                      <input
-                        type="text"
-                        value={newFile.originalPath || ""}
-                        onChange={(e) =>
-                          setNewFile({
-                            ...newFile,
-                            originalPath: e.target.value,
-                          })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                        placeholder="C:\Users\Monteur\Documents"
-                      />
-                    </div>
-
-                    {newFile.type === "text" && (
-                      <div>
-                        <label className="block font-bold mb-1">
-                          Contenu du fichier
-                        </label>
-                        <textarea
-                          value={newFile.content || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, content: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm h-24"
-                          placeholder="Contenu du document..."
-                        />
-                      </div>
-                    )}
-
-                    {newFile.type === "image" && (
-                      <div>
-                        <label className="block font-bold mb-1">
-                          URL de l'image
-                        </label>
-                        <input
-                          type="url"
-                          value={newFile.imageUrl || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, imageUrl: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                          placeholder="https://..."
-                        />
-                      </div>
-                    )}
-
-                    {newFile.type === "video" && (
-                      <div>
-                        <label className="block font-bold mb-1">
-                          URL de la vidéo
-                        </label>
-                        <input
-                          type="url"
-                          value={newFile.videoUrl || ""}
-                          onChange={(e) =>
-                            setNewFile({ ...newFile, videoUrl: e.target.value })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                          placeholder="https://..."
-                        />
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block font-bold mb-1">Titre *</label>
-                      <input
-                        type="text"
-                        value={
-                          isCreating
-                            ? newVideo.title || ""
-                            : editingVideo?.title || ""
-                        }
-                        onChange={(e) =>
-                          isCreating
-                            ? setNewVideo({
-                                ...newVideo,
-                                title: e.target.value,
-                              })
-                            : setEditingVideo({
-                                ...editingVideo!,
-                                title: e.target.value,
-                              })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                        placeholder="Titre de la vidéo"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block font-bold mb-1">Durée *</label>
-                        <input
-                          type="text"
-                          value={
-                            isCreating
-                              ? newVideo.duration || ""
-                              : editingVideo?.duration || ""
-                          }
-                          onChange={(e) =>
-                            isCreating
-                              ? setNewVideo({
-                                  ...newVideo,
-                                  duration: e.target.value,
-                                })
-                              : setEditingVideo({
-                                  ...editingVideo!,
-                                  duration: e.target.value,
-                                })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                          placeholder="2m30s"
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-bold mb-1">Année</label>
-                        <input
-                          type="text"
-                          value={
-                            isCreating
-                              ? newVideo.year || ""
-                              : editingVideo?.year || ""
-                          }
-                          onChange={(e) =>
-                            isCreating
-                              ? setNewVideo({
-                                  ...newVideo,
-                                  year: e.target.value,
-                                })
-                              : setEditingVideo({
-                                  ...editingVideo!,
-                                  year: e.target.value,
-                                })
-                          }
-                          className="w-full p-2 border rounded text-sm"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block font-bold mb-1">Catégorie</label>
-                      <select
-                        value={
-                          isCreating
-                            ? newVideo.category || "Commercial"
-                            : editingVideo?.category || "Commercial"
-                        }
-                        onChange={(e) =>
-                          isCreating
-                            ? setNewVideo({
-                                ...newVideo,
-                                category: e.target.value,
-                              })
-                            : setEditingVideo({
-                                ...editingVideo!,
-                                category: e.target.value,
-                              })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                      >
-                        <option value="Gaming">Gaming</option>
-                        <option value="Tutorial">Tutorial</option>
-                        <option value="Comedy">Comedy</option>
-                        <option value="Horror">Horror</option>
-                        <option value="Building">Building</option>
-                        <option value="Review">Review</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block font-bold mb-1">
-                        Description
-                      </label>
-                      <textarea
-                        value={
-                          isCreating
-                            ? newVideo.description || ""
-                            : editingVideo?.description || ""
-                        }
-                        onChange={(e) =>
-                          isCreating
-                            ? setNewVideo({
-                                ...newVideo,
-                                description: e.target.value,
-                              })
-                            : setEditingVideo({
-                                ...editingVideo!,
-                                description: e.target.value,
-                              })
-                        }
-                        className="w-full p-2 border rounded text-sm h-20"
-                        placeholder="Description de la vidéo..."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block font-bold mb-1">Statut</label>
-                      <select
-                        value={
-                          isCreating
-                            ? newVideo.status || "draft"
-                            : editingVideo?.status || "draft"
-                        }
-                        onChange={(e) =>
-                          isCreating
-                            ? setNewVideo({
-                                ...newVideo,
-                                status: e.target
-                                  .value as VideoProject["status"],
-                              })
-                            : setEditingVideo({
-                                ...editingVideo!,
-                                status: e.target
-                                  .value as VideoProject["status"],
-                              })
-                        }
-                        className="w-full p-2 border rounded text-sm"
-                      >
-                        <option value="draft">Brouillon</option>
-                        <option value="published">Publié</option>
-                        <option value="archived">Archivé</option>
-                      </select>
-                    </div>
-                  </>
-                )}
-              </div>
-
-              <div className="p-4 border-t flex justify-end space-x-2">
-                <button
-                  onClick={() => {
-                    setIsCreating(false);
-                    setEditingVideo(null);
-                    setIsAddingFile(false);
-                  }}
-                  className="xp-button px-4 py-2"
-                >
-                  Annuler
-                </button>
-                <button
-                  onClick={
-                    isAddingFile
-                      ? handleAddFile
-                      : isCreating
-                        ? handleCreateVideo
-                        : handleSaveEdit
-                  }
-                  className="xp-button px-4 py-2 bg-blue-100"
-                  disabled={
-                    isAddingFile
-                      ? !newFile.name || !newFile.size
-                      : isCreating || editingVideo
-                        ? !(
-                            (isCreating
-                              ? newVideo.title
-                              : editingVideo?.title) &&
-                            (isCreating
-                              ? newVideo.duration
-                              : editingVideo?.duration)
-                          )
-                        : false
-                  }
-                >
-                  {isAddingFile
-                    ? "Ajouter"
-                    : isCreating
-                      ? "Créer"
-                      : "Sauvegarder"}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 };
