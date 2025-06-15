@@ -349,31 +349,16 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                         <td className="p-3">
                       <div>
                         <label className="block font-bold mb-1">Durée *</label>
-                        <input
-                          type="text"
-                          value={
-                            isCreating ? (newVideo.duration || "") : (editingVideo?.duration || "")
-                          }
+                        <select
+                          value={newFile.type || "text"}
                           onChange={(e) =>
-                            isCreating
-                              ? setNewVideo({
-                                  ...newVideo,
-                                  duration: e.target.value,
-                                })
-                              : setEditingVideo({
-                                  ...editingVideo!,
-                                  duration: e.target.value,
-                                })
+                            setNewFile({
+                              ...newFile,
+                              type: e.target.value as RecycleBinItem["type"],
+                            })
                           }
                           className="w-full p-2 border rounded text-sm"
-                          placeholder="2m30s"
-                        />
-                      </div>
-                      <div>
-                        <label className="block font-bold mb-1">Année</label>
-                        <input
-                          type="text"
-                          value={isCreating ? (newVideo.year || "") : (editingVideo?.year || "")}
+                        >
                           onChange={(e) =>
                             isCreating
                               ? setNewVideo({ ...newVideo, year: e.target.value })
