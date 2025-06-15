@@ -575,7 +575,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <label className="block font-bold mb-2">Nom du Portfolio</label>
                 <input
                   type="text"
-                  defaultValue="Portfolio Monteur Vidéo Professionnel"
+                  defaultValue="lino.lvt - Portfolio Roblox"
                   className="w-full p-2 border rounded"
                 />
               </div>
@@ -583,14 +583,14 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 <label className="block font-bold mb-2">Email de Contact</label>
                 <input
                   type="email"
-                  defaultValue="contact@monteurvideo.pro"
+                  defaultValue="linolvt.pro@gmail.com"
                   className="w-full p-2 border rounded"
                 />
               </div>
               <div>
                 <label className="block font-bold mb-2">Description</label>
                 <textarea
-                  defaultValue="Portfolio professionnel de montage vidéo"
+                  defaultValue="Monteur vidéo spécialisé Roblox - +1M vues générées - 2 ans d'expérience"
                   className="w-full p-2 border rounded h-20"
                 />
               </div>
