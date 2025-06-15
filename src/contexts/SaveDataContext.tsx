@@ -205,6 +205,9 @@ const defaultData: SavedData = {
     theme: "default",
     notifications: true,
     syncInterval: 30000, // 30 secondes
+    profilePicture:
+      "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+    displayName: "Lino LVT",
   },
   lastSaved: new Date().toISOString(),
   version: "1.0.0",
