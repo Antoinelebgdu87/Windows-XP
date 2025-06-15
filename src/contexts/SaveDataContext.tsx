@@ -36,6 +36,17 @@ export interface AnalyticsData {
   topCategories: { name: string; count: number }[];
 }
 
+export interface ClientReview {
+  id: string;
+  clientName: string;
+  email: string;
+  rating: number;
+  comment: string;
+  date: string;
+  status: "pending" | "approved" | "rejected";
+  adminNote?: string;
+}
+
 export interface AppSettings {
   autoSave: boolean;
   theme: "default" | "classic";
