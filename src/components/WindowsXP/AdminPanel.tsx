@@ -670,6 +670,187 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           </div>
         )}
 
+        {activeTab === "recycle" && (
+          <div className="space-y-4">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-bold">Gestion de la Corbeille</h3>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => setIsAddingFile(true)}
+                  className="xp-button px-4 py-2 bg-green-100 flex items-center space-x-2"
+                >
+                  <Plus size={16} />
+                  <span>Ajouter un fichier</span>
+                </button>
+                <button
+                  onClick={handleClearRecycleBin}
+                  className="xp-button px-4 py-2 bg-red-100 flex items-center space-x-2"
+                  disabled={recycleBinItems.length === 0}
+                >
+                  <Trash2 size={16} />
+                  <span>Vider la corbeille</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-4 gap-4 mb-6">
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-blue-600">
+                  {
+                    recycleBinItems.filter((item) => item.type === "image")
+                      .length
+                  }
+                </div>
+                <div className="text-xs text-gray-600">Images</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-green-600">
+                  {
+                    recycleBinItems.filter((item) => item.type === "text")
+                      .length
+                  }
+                </div>
+                <div className="text-xs text-gray-600">Textes</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-red-600">
+                  {
+                    recycleBinItems.filter((item) => item.type === "video")
+                      .length
+                  }
+                </div>
+                <div className="text-xs text-gray-600">Vidéos</div>
+              </div>
+              <div className="xp-panel p-3 text-center">
+                <div className="text-2xl font-bold text-purple-600">
+                  {recycleBinItems.length}
+                </div>
+                <div className="text-xs text-gray-600">Total</div>
+              </div>
+            </div>
+
+            {/* Files List */}
+            <div className="xp-panel">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead className="bg-gray-100">
+                    <tr>
+                      <th className="text-left p-3">Nom</th>
+                      <th className="text-left p-3">Type</th>
+                      <th className="text-left p-3">Taille</th>
+                      <th className="text-left p-3">Supprimé le</th>
+                      <th className="text-left p-3">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {recycleBinItems.map((item) => (
+                      <tr key={item.id} className="border-b hover:bg-gray-50">
+                        <td className="p-3">
+                          <div className="flex items-center space-x-2">
+                            {getFileIcon(item.type)}
+                            <span>{item.name}</span>
+                          </div>
+                        </td>
+                        <td className="p-3 capitalize">{item.type}</td>
+                        <td className="p-3">{item.size}</td>
+                        <td className="p-3 text-xs text-gray-600">
+                          {item.dateDeleted}
+                        </td>
+                        <td className="p-3">
+                          <div className="flex space-x-1">
+                            <button
+                              onClick={() => handleDeleteFromRecycle(item.id)}
+                              className="xp-button p-1 bg-red-100 hover:bg-red-200"
+                              title="Supprimer"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Add File Modal */}
+            {isAddingFile && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg p-6 w-96">
+                  <h3 className="text-lg font-bold mb-4">Ajouter un fichier</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Nom du fichier
+                      </label>
+                      <input
+                        type="text"
+                        value={newFile.name}
+                        onChange={(e) =>
+                          setNewFile({ ...newFile, name: e.target.value })
+                        }
+                        className="w-full p-2 border rounded"
+                        placeholder="document.txt"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Type
+                      </label>
+                      <select
+                        value={newFile.type}
+                        onChange={(e) =>
+                          setNewFile({
+                            ...newFile,
+                            type: e.target.value as RecycleBinItem["type"],
+                          })
+                        }
+                        className="w-full p-2 border rounded"
+                      >
+                        <option value="text">Texte</option>
+                        <option value="image">Image</option>
+                        <option value="video">Vidéo</option>
+                        <option value="folder">Dossier</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Taille
+                      </label>
+                      <input
+                        type="text"
+                        value={newFile.size}
+                        onChange={(e) =>
+                          setNewFile({ ...newFile, size: e.target.value })
+                        }
+                        className="w-full p-2 border rounded"
+                        placeholder="1.2 MB"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex space-x-2 mt-6">
+                    <button
+                      onClick={handleAddFile}
+                      className="flex-1 bg-blue-600 text-white p-2 rounded"
+                    >
+                      Ajouter
+                    </button>
+                    <button
+                      onClick={() => setIsAddingFile(false)}
+                      className="flex-1 bg-gray-300 p-2 rounded"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {activeTab === "settings" && (
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Paramètres & Sauvegarde</h3>
