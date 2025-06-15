@@ -259,21 +259,19 @@ export const VideosContent = () => (
 export const SkillsContent = () => (
   <div className="xp-text space-y-4">
     <h2 className="text-lg font-bold text-green-800 flex items-center">
-      <span className="mr-2">⚡</span>
-      Expertise Technique
+      <span className="mr-2">🎮</span>
+      Expertise Gaming Roblox
     </h2>
 
     <div className="space-y-3">
       <div className="xp-panel">
-        <h3 className="font-bold mb-3 text-blue-700">
-          🎨 Logiciels de Montage
-        </h3>
+        <h3 className="font-bold mb-3 text-blue-700">🎨 Logiciels de Montage Gaming</h3>
         <div className="space-y-2">
           {[
-            { name: "Adobe Premiere Pro", level: 95, color: "bg-purple-500" },
-            { name: "After Effects", level: 90, color: "bg-blue-500" },
-            { name: "DaVinci Resolve", level: 85, color: "bg-red-500" },
-            { name: "Final Cut Pro", level: 80, color: "bg-gray-500" },
+            { name: "Adobe Premiere Pro", level: 90, color: "bg-purple-500" },
+            { name: "After Effects", level: 85, color: "bg-blue-500" },
+            { name: "OBS Studio", level: 95, color: "bg-green-500" },
+            { name: "Photoshop", level: 80, color: "bg-red-500" },
           ].map((skill, index) => (
             <div key={index} className="text-sm">
               <div className="flex justify-between mb-1">
@@ -290,47 +288,46 @@ export const SkillsContent = () => (
           ))}
         </div>
       </div>
-
       <div className="grid grid-cols-2 gap-3">
         <div className="xp-panel">
-          <h3 className="font-bold mb-2 text-green-700">🎯 Spécialisations</h3>
+          <h3 className="font-bold mb-2 text-green-700">🎯 Gaming Expertise</h3>
           <div className="text-xs space-y-1">
-            <div>• Storytelling visuel</div>
-            <div>• Étalonnage couleur</div>
-            <div>• Motion Graphics</div>
-            <div>• Sound Design</div>
-            <div>• Multicam</div>
-            <div>• Workflow 4K/8K</div>
+            <div>• Gameplay Roblox</div>
+            <div>• Montage viral</div>
+            <div>• Transitions dynamiques</div>
+            <div>• Sound Design gaming</div>
+            <div>• Thumbnails attractives</div>
+            <div>• Contenu engageant</div>
           </div>
         </div>
 
         <div className="xp-panel">
-          <h3 className="font-bold mb-2 text-orange-700">🔧 Technologies</h3>
+          <h3 className="font-bold mb-2 text-orange-700">🔧 Spécialités Roblox</h3>
           <div className="text-xs space-y-1">
-            <div>• Formats : ProRes, RED, RAW</div>
-            <div>• HDR & Dolby Vision</div>
-            <div>• Proxy Workflows</div>
-            <div>• Cloud Collaboration</div>
-            <div>• AI Enhancement</div>
-            <div>• VR/360° Editing</div>
+            <div>• Capture gameplay HD</div>
+            <div>• Montage rythme rapide</div>
+            <div>• Effets visuels gaming</div>
+            <div>• Optimisation YouTube</div>
+            <div>• Audience jeune</div>
+            <div>• Tendances Roblox</div>
           </div>
         </div>
       </div>
 
       <div className="xp-panel bg-gradient-to-r from-green-50 to-blue-50">
-        <h3 className="font-bold mb-2">🏆 Certifications & Formations</h3>
+        <h3 className="font-bold mb-2">🏆 Résultats & Achievements</h3>
         <div className="text-sm space-y-1">
           <div className="flex justify-between">
-            <span>Adobe Certified Expert (ACE)</span>
+            <span>+1 Million de vues générées</span>
             <span className="text-green-600 text-xs">✓ 2024</span>
           </div>
           <div className="flex justify-between">
-            <span>DaVinci Resolve Certified</span>
-            <span className="text-green-600 text-xs">✓ 2023</span>
+            <span>2 ans d'expérience Roblox</span>
+            <span className="text-green-600 text-xs">✓ 2022-2024</span>
           </div>
           <div className="flex justify-between">
-            <span>Apple Pro Video Certification</span>
-            <span className="text-green-600 text-xs">✓ 2023</span>
+            <span>Spécialiste contenu viral</span>
+            <span className="text-green-600 text-xs">✓ Expert</span>
           </div>
         </div>
       </div>
