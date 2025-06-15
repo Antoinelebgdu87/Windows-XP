@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Window from "./Window";
 import Taskbar from "./Taskbar";
+import XPIcon from "./XPIcon";
+import ContextMenu from "./ContextMenu";
 import {
   User,
   Camera,
@@ -32,6 +34,11 @@ interface OpenWindow {
 const Desktop: React.FC = () => {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([]);
   const [activeWindowId, setActiveWindowId] = useState<string | null>(null);
+  const [selectedIconId, setSelectedIconId] = useState<string | null>(null);
+  const [contextMenu, setContextMenu] = useState<{
+    show: boolean;
+    position: { x: number; y: number };
+  }>({ show: false, position: { x: 0, y: 0 } });
 
   const desktopIcons: DesktopIcon[] = [
     {
@@ -154,6 +161,24 @@ const Desktop: React.FC = () => {
     onClick: () => focusWindow(window.id),
   }));
 
+  const handleDesktopClick = (e: React.MouseEvent) => {
+    setSelectedIconId(null);
+    setContextMenu({ show: false, position: { x: 0, y: 0 } });
+  };
+
+  const handleDesktopRightClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setContextMenu({
+      show: true,
+      position: { x: e.clientX, y: e.clientY },
+    });
+  };
+
+  const handleContextMenuAction = (action: string) => {
+    console.log("Context menu action:", action);
+    // Handle context menu actions here
+  };
+
   return (
     <div
       className="fixed inset-0 overflow-hidden"
@@ -163,25 +188,20 @@ const Desktop: React.FC = () => {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
+      onClick={handleDesktopClick}
+      onContextMenu={handleDesktopRightClick}
     >
       {/* Desktop Icons */}
       <div className="relative h-full">
         {desktopIcons.map((icon) => (
-          <motion.div
+          <XPIcon
             key={icon.id}
-            className="xp-icon absolute cursor-pointer"
-            style={{ left: icon.position.x, top: icon.position.y }}
+            icon={icon.icon}
+            label={icon.label}
+            position={icon.position}
             onDoubleClick={() => handleIconDoubleClick(icon.action)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className="flex flex-col items-center">
-              {icon.icon}
-              <div className="xp-icon-label text-white text-xs mt-1 text-center">
-                {icon.label}
-              </div>
-            </div>
-          </motion.div>
+            isSelected={selectedIconId === icon.id}
+          />
         ))}
       </div>
 
@@ -201,6 +221,19 @@ const Desktop: React.FC = () => {
             {window.content}
           </Window>
         ))}
+      </AnimatePresence>
+
+      {/* Context Menu */}
+      <AnimatePresence>
+        {contextMenu.show && (
+          <ContextMenu
+            position={contextMenu.position}
+            onClose={() =>
+              setContextMenu({ show: false, position: { x: 0, y: 0 } })
+            }
+            onAction={handleContextMenuAction}
+          />
+        )}
       </AnimatePresence>
 
       {/* Taskbar */}
