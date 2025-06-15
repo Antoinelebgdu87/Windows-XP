@@ -20,32 +20,32 @@ const StartMenu: React.FC<StartMenuProps> = ({ onClose, onAction }) => {
     {
       id: "portfolio",
       icon: <User size={16} />,
-      label: "Mon Portfolio",
+      label: "À propos de moi",
       action: "open-portfolio",
       highlighted: true,
     },
     {
       id: "videos",
       icon: <Camera size={16} />,
-      label: "Mes Réalisations",
+      label: "Mes réalisations vidéo",
       action: "open-videos",
     },
     {
       id: "skills",
       icon: <FileText size={16} />,
-      label: "Compétences",
+      label: "Compétences techniques",
       action: "open-skills",
     },
     {
       id: "contact",
       icon: <Mail size={16} />,
-      label: "Contact",
+      label: "Me contacter",
       action: "open-contact",
     },
     {
       id: "projects",
       icon: <FolderOpen size={16} />,
-      label: "Projets Récents",
+      label: "Documents récents",
       action: "open-projects",
     },
     { type: "separator" },
@@ -80,13 +80,13 @@ const StartMenu: React.FC<StartMenuProps> = ({ onClose, onAction }) => {
         transition={{ duration: 0.2 }}
       >
         {/* User Section */}
-        <div className="xp-start-menu-header flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-            <User size={16} className="text-white" />
+        <div className="xp-start-menu-header flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center border-2 border-white">
+            <User size={18} className="text-white" />
           </div>
           <div>
-            <div className="font-bold">Monteur Vidéo</div>
-            <div className="text-xs opacity-80">Portfolio Professionnel</div>
+            <div className="font-bold text-sm">Monteur Vidéo Pro</div>
+            <div className="text-xs opacity-90">Windows XP Professional</div>
           </div>
         </div>
 
