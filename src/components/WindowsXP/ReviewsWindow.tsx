@@ -152,6 +152,18 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
     }, 3000);
   };
 
+  const handleUpdateProfile = () => {
+    const updatedSettings = {
+      ...data.settings,
+      profilePicture: newProfilePic || data.settings.profilePicture,
+      displayName: newDisplayName || data.settings.displayName,
+    };
+
+    saveData({ settings: updatedSettings });
+    alert("Profil mis à jour avec succès !");
+    console.log("👤 Profil mis à jour:", updatedSettings.displayName);
+  };
+
   const renderStars = (rating: number, size: "small" | "large" = "small") => {
     const starSize = size === "large" ? 24 : 16;
     return (
