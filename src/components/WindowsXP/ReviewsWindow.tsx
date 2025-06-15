@@ -415,7 +415,7 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
                       }
                       rows={6}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Partagez votre expérience avec Lino LVT : qualité du montage, délais, communication, résultats obtenus..."
+                      placeholder="Partagez votre expérience avec Linolvt : qualité du montage, délais, communication, résultats obtenus..."
                     />
                   </div>
 
