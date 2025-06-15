@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Refresh, Settings, FolderOpen, Trash2 } from "lucide-react";
+import { RefreshCw, Settings, FolderOpen, Trash2 } from "lucide-react";
 
 interface ContextMenuProps {
   position: { x: number; y: number };
@@ -14,7 +14,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   onAction,
 }) => {
   const menuItems = [
-    { id: "refresh", label: "Actualiser", icon: <Refresh size={14} /> },
+    { id: "refresh", label: "Actualiser", icon: <RefreshCw size={14} /> },
     { type: "separator" },
     {
       id: "new-folder",
