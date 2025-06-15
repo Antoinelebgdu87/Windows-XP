@@ -351,7 +351,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {videos.map((video) => (
+                    {data.videos.map((video) => (
                       <tr key={video.id} className="border-b hover:bg-gray-50">
                         <td className="p-3">
                           <div>
