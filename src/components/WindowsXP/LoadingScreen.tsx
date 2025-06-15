@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useXPSounds } from "../../hooks/useXPSounds";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
@@ -8,6 +9,7 @@ interface LoadingScreenProps {
 const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const { playStartupSound } = useXPSounds();
 
   const loadingSteps = [
     "Démarrage de Windows XP...",
@@ -18,6 +20,9 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
   ];
 
   useEffect(() => {
+    // Play startup sound when component mounts
+    setTimeout(() => playStartupSound(), 500);
+
     const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -30,7 +35,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onLoadingComplete }) => {
     }, 60);
 
     return () => clearInterval(timer);
-  }, [onLoadingComplete]);
+  }, [onLoadingComplete, playStartupSound]);
 
   useEffect(() => {
     const stepTimer = setInterval(() => {
