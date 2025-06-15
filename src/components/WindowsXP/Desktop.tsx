@@ -168,7 +168,7 @@ const Desktop: React.FC = () => {
         break;
       case "open-reviews":
         openWindow({
-          title: "Avis Clients - Lino LVT",
+          title: "Avis Clients - Linolvt",
           content: <ReviewsWindow onClose={() => closeWindow("reviews")} />,
           position: { x: 200, y: 80 },
           width: 800,
