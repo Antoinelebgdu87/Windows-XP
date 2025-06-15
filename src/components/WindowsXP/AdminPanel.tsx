@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Plus,
@@ -13,11 +13,15 @@ import {
   FileText,
   Image,
   Folder,
+  Download,
+  RefreshCw,
 } from "lucide-react";
 import {
   useRecycleBin,
   RecycleBinItem,
 } from "../../contexts/RecycleBinContext";
+import { useSaveData, VideoData } from "../../contexts/SaveDataContext";
+import { useAutoSave } from "../../hooks/useAutoSave";
 
 interface AdminPanelProps {
   onClose: () => void;
