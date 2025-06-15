@@ -40,52 +40,14 @@ interface VideoProject {
 }
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
-  const [videos, setVideos] = useState<VideoProject[]>([
-    {
-      id: "1",
-      title: "Roblox Brookhaven RP - Best Moments",
-      duration: "8m12s",
-      year: "2024",
-      category: "Gaming",
-      description: "Compilation virale - 250K vues générées",
-      status: "published",
-      views: 250000,
-      lastModified: "25/12/2024",
-    },
-    {
-      id: "2",
-      title: "Adopt Me Trading Tips & Tricks",
-      duration: "5m34s",
-      year: "2024",
-      category: "Tutorial",
-      description: "Guide complet pour traders débutants",
-      status: "published",
-      views: 180000,
-      lastModified: "24/12/2024",
-    },
-    {
-      id: "3",
-      title: "Roblox Horror Games Marathon",
-      duration: "12m45s",
-      year: "2024",
-      category: "Horror",
-      description: "Compilation frissons garantis",
-      status: "published",
-      views: 320000,
-      lastModified: "23/12/2024",
-    },
-    {
-      id: "4",
-      title: "Roblox Funny Moments #16",
-      duration: "4m56s",
-      year: "2024",
-      category: "Comedy",
-      description: "En cours de montage - sortie prévue",
-      status: "draft",
-      views: 0,
-      lastModified: "22/12/2024",
-    },
-  ]);
+  const {
+    data,
+    saveData,
+    exportData,
+    importData,
+    isAutoSaveEnabled,
+    toggleAutoSave,
+  } = useSaveData();
 
   const [editingVideo, setEditingVideo] = useState<VideoProject | null>(null);
   const [isCreating, setIsCreating] = useState(false);
