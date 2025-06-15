@@ -92,7 +92,7 @@ const Desktop: React.FC = () => {
       id: "recycle",
       label: "Corbeille",
       icon: <Trash2 size={32} className="text-gray-500" />,
-      position: { x: window.innerWidth - 120, y: window.innerHeight - 200 },
+      position: { x: 1180, y: 520 },
       action: "open-recycle",
     },
   ];
