@@ -49,20 +49,29 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
     toggleAutoSave,
   } = useSaveData();
 
-  const [editingVideo, setEditingVideo] = useState<VideoProject | null>(null);
+  const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "videos" | "analytics" | "recycle" | "settings"
   >("videos");
 
-  const [newVideo, setNewVideo] = useState<Partial<VideoProject>>({
+  const [newVideo, setNewVideo] = useState<Partial<VideoData>>({
     title: "",
-    duration: "",
-    year: "2024",
-    category: "Gaming",
     description: "",
-    status: "draft",
+    category: "Gaming",
+    thumbnail: "",
+    url: "",
+    views: 0,
+    likes: 0,
+    date: new Date().toISOString().split("T")[0],
   });
+
+  // Auto-save hook pour sauvegarder automatiquement les changements
+  const { saveNow } = useAutoSave(data.videos);
+
+  useEffect(() => {
+    console.log(`📊 Admin Panel: ${data.videos.length} vidéos chargées`);
+  }, [data.videos]);
 
   // Gestion de la corbeille
   const {
