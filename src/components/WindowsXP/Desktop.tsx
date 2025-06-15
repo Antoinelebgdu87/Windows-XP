@@ -13,6 +13,7 @@ import {
   SkillsContent,
   ContactContent,
 } from "./PortfolioContent";
+import ReviewsWindow from "./ReviewsWindow";
 import {
   User,
   Camera,
@@ -22,6 +23,7 @@ import {
   Monitor,
   Trash2,
   Settings,
+  MessageCircle,
 } from "lucide-react";
 
 interface DesktopIcon {
