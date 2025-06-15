@@ -29,7 +29,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onClose, onLoginSuccess }) => {
     }
 
     // Vérifier les faux identifiants (rickroll)
-    if (username === "Admin12" && password === "Baka32") {
+    if (username === "Admin" && password === "Baka") {
       setIsLoading(false);
       // Rickroll !
       window.open("https://www.youtube.com/watch?v=xvFZjo5PgG0", "_blank");
