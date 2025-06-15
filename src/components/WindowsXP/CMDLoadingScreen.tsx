@@ -150,20 +150,45 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
         }}
       />
 
+      {/* Header système */}
+      <div className="border-b border-green-800 p-2 bg-black bg-opacity-50">
+        <div className="text-green-300 text-xs">
+          Microsoft Windows XP [Build 2600] - Invite de commandes
+        </div>
+      </div>
+
       {/* Contenu CMD */}
-      <div className="p-4 h-full flex flex-col">
+      <div className="p-4 flex-1 overflow-hidden">
         {displayedLines.map((line, index) => (
-          <div key={index} className="whitespace-pre">
+          <div
+            key={index}
+            className="whitespace-pre"
+            style={{
+              color:
+                line.includes("C:\\") && line.includes(">")
+                  ? "#00ff00"
+                  : line.includes(".exe")
+                    ? "#ffff00"
+                    : line.includes("<REP>")
+                      ? "#00ffff"
+                      : line.includes("fichier(s)") || line.includes("octets")
+                        ? "#ffff00"
+                        : line.includes("Démarrage") ||
+                            line.includes("Chargement")
+                          ? "#ffffff"
+                          : "#00ff00",
+            }}
+          >
             {line}
             {index === currentLineIndex && showCursor && (
-              <span className="bg-green-400 text-black">_</span>
+              <span className="bg-green-400 text-black animate-pulse">_</span>
             )}
           </div>
         ))}
 
         {/* Curseur à la fin si toutes les lignes sont affichées */}
         {isComplete && showCursor && (
-          <span className="bg-green-400 text-black">_</span>
+          <span className="bg-green-400 text-black animate-pulse">_</span>
         )}
       </div>
 
