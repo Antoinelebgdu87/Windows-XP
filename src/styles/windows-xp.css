@@ -239,28 +239,59 @@
   top: 50%;
   transform: translateY(-50%);
   display: flex;
-  gap: 2px;
+  gap: 1px;
 }
 
 .xp-control-button {
-  width: 16px;
+  width: 21px;
   height: 14px;
-  border: 1px outset #ece9d8;
-  background: #ece9d8;
+  border: 1px solid #003c74;
+  background: linear-gradient(
+    to bottom,
+    #e8f0fd 0%,
+    #c1dbfc 50%,
+    #a6d2fc 51%,
+    #74b9f0 100%
+  );
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 8px;
   font-weight: bold;
+  color: #000;
 }
 
 .xp-control-button:hover {
-  background: #ddeeff;
+  background: linear-gradient(
+    to bottom,
+    #f0f8ff 0%,
+    #d1e5ff 50%,
+    #b6dcff 51%,
+    #84c9ff 100%
+  );
 }
 
 .xp-control-button:active {
-  border: 1px inset #ece9d8;
+  border: 1px inset #003c74;
+  background: linear-gradient(
+    to bottom,
+    #74b9f0 0%,
+    #a6d2fc 50%,
+    #c1dbfc 51%,
+    #e8f0fd 100%
+  );
+}
+
+.xp-control-button.close:hover {
+  background: linear-gradient(
+    to bottom,
+    #ff9999 0%,
+    #ff6666 50%,
+    #ff4444 51%,
+    #ff2222 100%
+  );
+  color: white;
 }
 
 /* Scrollbars */
