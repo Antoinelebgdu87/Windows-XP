@@ -7,6 +7,8 @@ import {
   User,
   Calendar,
   CheckCircle,
+  Camera,
+  Settings,
 } from "lucide-react";
 import { useSaveData, ClientReview } from "../../contexts/SaveDataContext";
 
