@@ -273,6 +273,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
         {[
           { id: "videos", label: "Vidéos", icon: Video },
           { id: "analytics", label: "Statistiques", icon: Eye },
+          { id: "reviews", label: "Avis Clients", icon: MessageCircle },
           { id: "recycle", label: "Corbeille", icon: Trash2 },
           { id: "settings", label: "Paramètres", icon: Shield },
         ].map((tab) => (
