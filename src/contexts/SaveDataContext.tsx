@@ -52,6 +52,8 @@ export interface AppSettings {
   theme: "default" | "classic";
   notifications: boolean;
   syncInterval: number;
+  profilePicture: string;
+  displayName: string;
 }
 
 export interface SavedData {
