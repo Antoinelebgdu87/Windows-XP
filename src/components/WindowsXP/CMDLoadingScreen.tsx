@@ -84,7 +84,7 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
           setCurrentLineIndex((prev) => prev + 1);
           setCurrentChar(0);
         },
-        currentLine.includes("portfolio.xp") ? 1000 : 200,
+        currentLine.includes("portfolio.xp") ? 300 : 70,
       );
     }
   }, [currentLineIndex, currentChar, cmdLines, onLoadingComplete]);
