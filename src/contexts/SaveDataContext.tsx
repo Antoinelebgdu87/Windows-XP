@@ -58,6 +58,7 @@ export interface SavedData {
   videos: VideoData[];
   recycleBin: RecycleBinItem[];
   analytics: AnalyticsData;
+  reviews: ClientReview[];
   settings: AppSettings;
   lastSaved: string;
   version: string;
