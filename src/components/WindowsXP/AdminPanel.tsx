@@ -311,27 +311,27 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
             <div className="grid grid-cols-4 gap-4 mb-6">
               <div className="xp-panel p-3 text-center">
                 <div className="text-2xl font-bold text-blue-600">
-                  {videos.filter((v) => v.status === "published").length}
+                  {data.videos.length}
                 </div>
                 <div className="text-xs text-gray-600">Publiées</div>
               </div>
               <div className="xp-panel p-3 text-center">
                 <div className="text-2xl font-bold text-yellow-600">
-                  {videos.filter((v) => v.status === "draft").length}
+                  {data.videos.filter((v) => v.date).length}
                 </div>
-                <div className="text-xs text-gray-600">Brouillons</div>
+                <div className="text-xs text-gray-600">Créations</div>
               </div>
               <div className="xp-panel p-3 text-center">
                 <div className="text-2xl font-bold text-green-600">
-                  {videos.reduce((acc, v) => acc + v.views, 0)}
+                  {data.videos.reduce((acc, v) => acc + v.views, 0)}
                 </div>
                 <div className="text-xs text-gray-600">Vues totales</div>
               </div>
               <div className="xp-panel p-3 text-center">
                 <div className="text-2xl font-bold text-purple-600">
-                  {videos.length}
+                  {data.videos.reduce((acc, v) => acc + v.likes, 0)}
                 </div>
-                <div className="text-xs text-gray-600">Total vidéos</div>
+                <div className="text-xs text-gray-600">Likes totaux</div>
               </div>
             </div>
 
