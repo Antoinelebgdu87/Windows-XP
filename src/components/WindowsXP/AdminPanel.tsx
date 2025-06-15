@@ -674,6 +674,68 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-bold">Paramètres & Sauvegarde</h3>
 
+            {/* Profil */}
+            <div className="xp-panel p-4">
+              <h4 className="font-semibold mb-4">Profil Public</h4>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-blue-200">
+                  <img
+                    src={data.settings.profilePicture}
+                    alt={data.settings.displayName}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src =
+                        "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1";
+                    }}
+                  />
+                </div>
+                <div>
+                  <p className="font-medium">{data.settings.displayName}</p>
+                  <p className="text-sm text-gray-600">
+                    Monteur Vidéo Professionnel
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Visible dans la fenêtre Avis Clients
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm text-blue-600">
+                💡 Pour modifier le profil, utilisez l'onglet "Mon Profil" dans
+                la fenêtre Avis
+              </p>
+            </div>
+
+            {/* Statistiques de sauvegarde */}
+            <div className="xp-panel p-4">
+              <h4 className="font-semibold mb-4">État des Données</h4>
+              <div className="grid grid-cols-3 gap-4 mb-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {data.videos.length}
+                  </div>
+                  <div className="text-xs text-gray-600">Vidéos</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {data.reviews.length}
+                  </div>
+                  <div className="text-xs text-gray-600">Avis</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {data.recycleBin.length}
+                  </div>
+                  <div className="text-xs text-gray-600">
+                    Fichiers Corbeille
+                  </div>
+                </div>
+              </div>
+              <div className="text-xs text-gray-500">
+                ✅ Toutes les données sont automatiquement sauvegardées
+              </div>
+            </div>
+
+            {/* Gestion des données */}
             <div className="xp-panel p-4">
               <h4 className="font-semibold mb-4">Gestion des Données</h4>
               <div className="flex gap-4">
@@ -708,6 +770,56 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 Dernière sauvegarde:{" "}
                 {new Date(data.lastSaved).toLocaleString("fr-FR")}
               </p>
+            </div>
+
+            {/* Actions de maintenance */}
+            <div className="xp-panel p-4">
+              <h4 className="font-semibold mb-4">Maintenance</h4>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    if (
+                      confirm(
+                        "Réinitialiser toutes les données aux valeurs par défaut ?",
+                      )
+                    ) {
+                      // Reset logic could be implemented here
+                      alert("Fonction de reset à implémenter si nécessaire");
+                    }
+                  }}
+                  className="xp-button px-4 py-2 bg-red-100 text-red-800"
+                >
+                  Réinitialiser
+                </button>
+                <button
+                  onClick={() => {
+                    const stats = {
+                      videos: data.videos.length,
+                      reviews: data.reviews.length,
+                      approved: data.reviews.filter(
+                        (r) => r.status === "approved",
+                      ).length,
+                      pending: data.reviews.filter(
+                        (r) => r.status === "pending",
+                      ).length,
+                      recycleBin: data.recycleBin.length,
+                      lastSaved: data.lastSaved,
+                    };
+                    alert(
+                      `📊 Rapport Système:\n\n` +
+                        `Vidéos: ${stats.videos}\n` +
+                        `Avis totaux: ${stats.reviews}\n` +
+                        `Avis approuvés: ${stats.approved}\n` +
+                        `En attente: ${stats.pending}\n` +
+                        `Fichiers corbeille: ${stats.recycleBin}\n` +
+                        `Dernière sauvegarde: ${new Date(stats.lastSaved).toLocaleString("fr-FR")}`,
+                    );
+                  }}
+                  className="xp-button px-4 py-2 bg-gray-100"
+                >
+                  Rapport Système
+                </button>
+              </div>
             </div>
           </div>
         )}
