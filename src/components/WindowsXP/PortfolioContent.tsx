@@ -1,5 +1,6 @@
 import React from "react";
-import { Star, Award, Clock, Users } from "lucide-react";
+import { Star, Award, Clock, Users, ExternalLink, Play } from "lucide-react";
+import { useSaveData } from "../../contexts/SaveDataContext";
 
 export const PortfolioContent = () => (
   <div className="xp-text space-y-4">
