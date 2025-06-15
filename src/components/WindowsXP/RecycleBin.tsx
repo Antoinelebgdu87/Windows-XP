@@ -1,69 +1,13 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FileText, Image, Folder, X } from "lucide-react";
+Username: Admin
+Password: Bakadu36
 
-interface RecycleBinProps {
-  onClose: () => void;
-}
+ATTENTION: Ne pas partager ces informations !
+Accès réservé au personnel autorisé uniquement.
 
-interface RecycleBinItem {
-  id: string;
-  name: string;
-  type: "image" | "text" | "folder";
-  size: string;
-  dateDeleted: string;
-  content?: string;
-  imageUrl?: string;
-}
-
-const RecycleBin: React.FC<RecycleBinProps> = ({ onClose }) => {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [viewingItem, setViewingItem] = useState<RecycleBinItem | null>(null);
-
-  const recycleBinItems: RecycleBinItem[] = [
-    {
-      id: "img1",
-      name: "image1.jpg",
-      type: "image",
-      size: "2.4 Mo",
-      dateDeleted: "25/12/2024 14:20",
-      imageUrl:
-        "https://images.pexels.com/photos/1103970/pexels-photo-1103970.jpeg",
+Dernière mise à jour: 25/12/2024
+Système: Windows XP Professional`,
     },
-    {
-      id: "img2",
-      name: "image2.jpg",
-      type: "image",
-      size: "1.8 Mo",
-      dateDeleted: "25/12/2024 14:19",
-      imageUrl:
-        "https://images.pexels.com/photos/842711/pexels-photo-842711.jpeg",
-    },
-    {
-      id: "img3",
-      name: "image3.jpg",
-      type: "image",
-      size: "3.1 Mo",
-      dateDeleted: "25/12/2024 14:18",
-      imageUrl:
-        "https://images.pexels.com/photos/1379636/pexels-photo-1379636.jpeg",
-    },
-    {
-      id: "img4",
-      name: "image4.jpg",
-      type: "image",
-      size: "2.7 Mo",
-      dateDeleted: "25/12/2024 14:17",
-      imageUrl:
-        "https://images.pexels.com/photos/1391498/pexels-photo-1391498.jpeg",
-    },
-    {
-      id: "admin-txt",
-      name: "admin_credentials.txt",
-      type: "text",
-      size: "125 octets",
-      dateDeleted: "25/12/2024 13:45",
-      content: `IDENTIFIANTS ADMINISTRATEUR
+  ];
 =============================
 
 Username: Admin
@@ -93,6 +37,8 @@ Système: Windows XP Professional`,
         return <FileText size={16} className="text-gray-600" />;
       case "folder":
         return <Folder size={16} className="text-yellow-600" />;
+      case "video":
+        return <Video size={16} className="text-red-600" />;
       default:
         return <FileText size={16} className="text-gray-600" />;
     }
@@ -201,11 +147,36 @@ Système: Windows XP Professional`,
       {/* Toolbar */}
       <div className="xp-panel p-2 text-xs">
         <div className="flex space-x-4">
-          <button className="xp-button text-xs px-3 py-1">Restaurer</button>
-          <button className="xp-button text-xs px-3 py-1">
+          <button
+            className="xp-button text-xs px-3 py-1"
+            onClick={() =>
+              selectedItem && restoreItem(selectedItem) && setSelectedItem(null)
+            }
+            disabled={!selectedItem}
+          >
+            Restaurer
+          </button>
+          <button
+            className="xp-button text-xs px-3 py-1"
+            onClick={() => {
+              if (selectedItem && confirm("Supprimer définitivement ce fichier ?")) {
+                removeItem(selectedItem);
+                setSelectedItem(null);
+              }
+            }}
+            disabled={!selectedItem}
+          >
             Supprimer définitivement
           </button>
-          <button className="xp-button text-xs px-3 py-1">
+          <button
+            className="xp-button text-xs px-3 py-1"
+            onClick={() => {
+              if (confirm("Vider complètement la corbeille ?")) {
+                clearAll();
+                setSelectedItem(null);
+              }
+            }}
+          >
             Vider la corbeille
           </button>
         </div>
@@ -243,7 +214,9 @@ Système: Windows XP Professional`,
                   ? "Image JPEG"
                   : item.type === "text"
                     ? "Document texte"
-                    : "Dossier"}
+                    : item.type === "video"
+                      ? "Fichier vidéo"
+                      : "Dossier"}
               </div>
               <div>{item.dateDeleted}</div>
             </motion.div>
