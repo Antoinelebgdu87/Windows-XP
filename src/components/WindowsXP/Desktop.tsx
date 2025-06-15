@@ -57,7 +57,7 @@ const Desktop: React.FC = () => {
   const desktopIcons: DesktopIcon[] = [
     {
       id: "portfolio",
-      label: "Portfolio Lino LVT",
+      label: "Portfolio Linolvt",
       icon: <User size={32} className="text-blue-600" />,
       position: { x: 30, y: 30 },
       action: "open-portfolio",
