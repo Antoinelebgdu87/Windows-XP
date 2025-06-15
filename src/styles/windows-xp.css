@@ -9,22 +9,47 @@
 /* Windows XP Window Styling */
 .xp-window {
   background: #ece9d8;
-  border: 2px outset #ece9d8;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  border: 1px solid #0054e3;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.xp-window.inactive {
+  border: 1px solid #929292;
 }
 
 .xp-window-header {
-  background: linear-gradient(to right, #0054e3, #0a6efd);
+  background: linear-gradient(
+    to bottom,
+    #3c8edb 0%,
+    #1c5dab 50%,
+    #245fac 51%,
+    #1c5dab 100%
+  );
   color: white;
   padding: 3px 8px;
   font-weight: bold;
   font-size: 11px;
   position: relative;
   cursor: move;
+  border-bottom: 1px solid #1c5dab;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .xp-window-header.inactive {
-  background: linear-gradient(to right, #7a7a7a, #a6a6a6);
+  background: linear-gradient(
+    to bottom,
+    #bfbfbf 0%,
+    #929292 50%,
+    #979797 51%,
+    #929292 100%
+  );
+  color: #000000;
+  border-bottom: 1px solid #929292;
 }
 
 .xp-window-content {
@@ -54,7 +79,13 @@
 
 /* Windows XP Taskbar */
 .xp-taskbar {
-  background: linear-gradient(to bottom, #1f5bff, #1941a5);
+  background: linear-gradient(
+    to bottom,
+    #245fac 0%,
+    #1941a5 50%,
+    #1f5bff 51%,
+    #1941a5 100%
+  );
   border-top: 1px solid #ffffff;
   height: 30px;
   position: fixed;
@@ -65,26 +96,42 @@
   display: flex;
   align-items: center;
   padding: 0 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .xp-start-button {
-  background: linear-gradient(to bottom, #4caf50, #2e7d32);
-  border: 1px outset #4caf50;
+  background: linear-gradient(
+    to bottom,
+    #5cbf60 0%,
+    #4ba146 50%,
+    #57ba5a 51%,
+    #4ba146 100%
+  );
+  border: 1px outset #4ba146;
   color: white;
   font-weight: bold;
-  padding: 4px 20px;
-  border-radius: 3px 8px 8px 3px;
+  padding: 4px 16px;
+  border-radius: 3px 12px 12px 3px;
   cursor: pointer;
   font-size: 11px;
   margin-right: 8px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .xp-start-button:hover {
-  background: linear-gradient(to bottom, #66bb6a, #388e3c);
+  background: linear-gradient(
+    to bottom,
+    #6cc965 0%,
+    #52b84c 50%,
+    #61c95f 51%,
+    #52b84c 100%
+  );
 }
 
 .xp-start-button:active {
-  border: 1px inset #4caf50;
+  border: 1px inset #4ba146;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Windows XP Desktop Icons */
