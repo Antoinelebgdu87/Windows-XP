@@ -166,6 +166,15 @@ const Desktop: React.FC = () => {
           height: 300,
         });
         break;
+      case "open-reviews":
+        openWindow({
+          title: "Avis Clients - Lino LVT",
+          content: <ReviewsWindow onClose={() => closeWindow("reviews")} />,
+          position: { x: 200, y: 80 },
+          width: 800,
+          height: 600,
+        });
+        break;
       case "open-recycle":
         openWindow({
           title: "Corbeille",
