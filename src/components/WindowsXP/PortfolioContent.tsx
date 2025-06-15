@@ -89,111 +89,160 @@ export const PortfolioContent = () => (
   </div>
 );
 
-export const VideosContent = () => (
-  <div className="xp-text space-y-4">
-    <h2 className="text-lg font-bold text-red-800 flex items-center">
-      <span className="mr-2">🎮</span>
-      Portfolio Roblox
-    </h2>
+export const VideosContent = () => {
+  const { data } = useSaveData();
 
-    <div className="xp-panel bg-green-50">
-      <div className="text-sm flex items-center">
-        <span className="mr-2">🔥</span>
-        <strong>+1 Million de vues générées :</strong>
-        <button className="xp-button ml-2 text-xs">Voir showreel</button>
+  const handleVideoClick = (url: string) => {
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    const colors: { [key: string]: string } = {
+      "Motion Design": "bg-purple-100 text-purple-800",
+      Gaming: "bg-green-100 text-green-800",
+      "Montage Vidéo": "bg-blue-100 text-blue-800",
+      Animation: "bg-pink-100 text-pink-800",
+      Tutorial: "bg-yellow-100 text-yellow-800",
+      Commercial: "bg-gray-100 text-gray-800",
+      "Music Video": "bg-red-100 text-red-800",
+      VFX: "bg-indigo-100 text-indigo-800",
+      Documentary: "bg-orange-100 text-orange-800",
+      "Social Media": "bg-cyan-100 text-cyan-800",
+    };
+    return colors[category] || "bg-gray-100 text-gray-800";
+  };
+
+  return (
+    <div className="xp-text space-y-4 h-full overflow-y-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-blue-800">Mes Créations</h2>
+        <div className="text-sm text-gray-600">
+          {data.videos.length} vidéo{data.videos.length > 1 ? "s" : ""}
+        </div>
       </div>
-    </div>
 
-    <div className="space-y-3">
-      {[
-        {
-          title: "Roblox Brookhaven RP - Best Moments",
-          duration: "8m12s",
-          year: "2024",
-          category: "Gaming",
-          color: "bg-green-100",
-          description: "Compilation virale - 250K vues",
-          views: "250K",
-        },
-        {
-          title: "Adopt Me Trading Tips & Tricks",
-          duration: "5m34s",
-          year: "2024",
-          category: "Tutorial",
-          color: "bg-blue-100",
-          description: "Guide complet pour traders débutants",
-          views: "180K",
-        },
-        {
-          title: "Roblox Horror Games Marathon",
-          duration: "12m45s",
-          year: "2024",
-          category: "Horror",
-          color: "bg-red-100",
-          description: "Compilation frissons garantis",
-          views: "320K",
-        },
-        {
-          title: "Building Challenge Mega Build",
-          duration: "6m18s",
-          year: "2024",
-          category: "Building",
-          color: "bg-purple-100",
-          description: "Construction créative en accéléré",
-          views: "190K",
-        },
-        {
-          title: "Roblox Funny Moments #15",
-          duration: "4m56s",
-          year: "2024",
-          category: "Comedy",
-          color: "bg-yellow-100",
-          description: "Compilation rires et fails épiques",
-          views: "275K",
-        },
-        {
-          title: "New Roblox Games to Try",
-          duration: "7m23s",
-          year: "2024",
-          category: "Review",
-          color: "bg-orange-100",
-          description: "Test et avis sur les nouveautés",
-          views: "165K",
-        },
-      ].map((video, index) => (
-        <div
-          key={index}
-          className={`xp-panel ${video.color} cursor-pointer hover:shadow-md transition-shadow`}
-        >
-          <div className="flex justify-between items-start mb-2">
-            <div className="font-bold text-sm">{video.title}</div>
-            <div className="text-xs bg-white px-2 py-1 rounded">
-              {video.category}
-            </div>
+      {/* Statistics */}
+      <div className="grid grid-cols-3 gap-2 mb-4">
+        <div className="xp-panel text-center p-2">
+          <div className="text-lg font-bold text-green-600">
+            {data.videos.reduce((sum, v) => sum + v.views, 0).toLocaleString()}
           </div>
-          <div className="text-xs text-gray-600 mb-2">{video.description}</div>
-          <div className="flex justify-between items-center">
-            <div className="text-xs text-gray-500">
-              {video.duration} • {video.views} vues
-            </div>
-            <button className="xp-button text-xs">▶ Voir</button>
+          <div className="text-xs text-gray-600">Vues Totales</div>
+        </div>
+        <div className="xp-panel text-center p-2">
+          <div className="text-lg font-bold text-red-600">
+            {data.videos.reduce((sum, v) => sum + v.likes, 0).toLocaleString()}
+          </div>
+          <div className="text-xs text-gray-600">Likes</div>
+        </div>
+        <div className="xp-panel text-center p-2">
+          <div className="text-lg font-bold text-purple-600">
+            {new Set(data.videos.map((v) => v.category)).size}
+          </div>
+          <div className="text-xs text-gray-600">Catégories</div>
+        </div>
+      </div>
+
+      {/* Videos List */}
+      {data.videos.length === 0 ? (
+        <div className="text-center py-8">
+          <Play size={48} className="text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-500 mb-2">Aucune vidéo pour le moment</p>
+          <p className="text-xs text-gray-400">
+            Les vidéos seront ajoutées via le panneau d'administration
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {data.videos
+            .sort(
+              (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+            )
+            .map((video) => (
+              <div
+                key={video.id}
+                className="xp-panel cursor-pointer hover:shadow-md transition-all hover:bg-blue-50"
+                onClick={() => handleVideoClick(video.url)}
+              >
+                <div className="flex gap-3">
+                  {/* Thumbnail */}
+                  {video.thumbnail && (
+                    <div className="w-24 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-sm text-blue-800 truncate pr-2">
+                        {video.title}
+                      </h3>
+                      <span
+                        className={`px-2 py-1 rounded text-xs flex-shrink-0 ${getCategoryColor(video.category)}`}
+                      >
+                        {video.category}
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-gray-600 mb-2 line-clamp-2">
+                      {video.description}
+                    </p>
+
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span>👁️ {video.views.toLocaleString()}</span>
+                        <span>❤️ {video.likes.toLocaleString()}</span>
+                        <span>
+                          📅 {new Date(video.date).toLocaleDateString("fr-FR")}
+                        </span>
+                      </div>
+
+                      {video.url && (
+                        <button
+                          className="xp-button text-xs flex items-center gap-1 hover:bg-blue-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleVideoClick(video.url);
+                          }}
+                        >
+                          <ExternalLink size={12} />
+                          Voir
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+      )}
+
+      {/* Call to Action */}
+      <div className="xp-panel bg-gradient-to-r from-blue-50 to-purple-50 mt-6">
+        <div className="text-center p-2">
+          <div className="text-sm font-bold text-blue-800 mb-1">
+            🎬 Besoin d'une création sur mesure ?
+          </div>
+          <div className="text-xs text-gray-600">
+            Motion design, montage vidéo, animation - Contactez-moi pour
+            discuter de votre projet !
           </div>
         </div>
-      ))}
-    </div>
-
-    <div className="xp-panel bg-gradient-to-r from-blue-50 to-green-50">
-      <div className="text-sm text-center">
-        <strong>🎯 Projets sur mesure</strong>
-        <br />
-        <span className="text-xs">
-          Vous avez un projet spécifique Roblox ? Contactez-moi pour un devis
-          personnalisé.
-        </span>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const VideosContent = () => {
   const { data } = useSaveData();
