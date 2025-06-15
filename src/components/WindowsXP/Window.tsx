@@ -78,7 +78,7 @@ const Window: React.FC<WindowProps> = ({
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0, opacity: 0 }}
-      className={`xp-window fixed ${className}`}
+      className={`xp-window fixed ${isActive ? "" : "inactive"} ${className}`}
       style={{
         left: position.x,
         top: position.y,
@@ -104,6 +104,7 @@ const Window: React.FC<WindowProps> = ({
                 e.stopPropagation();
                 handleMinimize();
               }}
+              title="Réduire"
             >
               <Minus size={8} />
             </button>
@@ -114,16 +115,18 @@ const Window: React.FC<WindowProps> = ({
               e.stopPropagation();
               playClickSound();
             }}
+            title="Agrandir"
           >
             <Square size={6} />
           </button>
           {onClose && (
             <button
-              className="xp-control-button"
+              className="xp-control-button close"
               onClick={(e) => {
                 e.stopPropagation();
                 handleClose();
               }}
+              title="Fermer"
             >
               <X size={8} />
             </button>
