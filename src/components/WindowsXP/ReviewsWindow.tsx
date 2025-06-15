@@ -452,7 +452,118 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
               </div>
             )}
           </div>
-        )}
+        ) : activeTab === "profile" ? (
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-800 mb-6">
+                Personnaliser mon Profil
+              </h3>
+
+              <div className="space-y-6">
+                {/* Photo de profil actuelle */}
+                <div className="text-center">
+                  <div className="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-blue-200 mb-4">
+                    <img
+                      src={newProfilePic || data.settings.profilePicture}
+                      alt="Photo de profil"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1";
+                      }}
+                    />
+                  </div>
+                  <p className="text-sm text-gray-600">Photo de profil actuelle</p>
+                </div>
+
+                {/* Nom d'affichage */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nom d'affichage
+                  </label>
+                  <input
+                    type="text"
+                    value={newDisplayName}
+                    onChange={(e) => setNewDisplayName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="Ex: Lino LVT"
+                  />
+                </div>
+
+                {/* URL Photo de profil */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    URL de la photo de profil
+                  </label>
+                  <input
+                    type="url"
+                    value={newProfilePic}
+                    onChange={(e) => setNewProfilePic(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="https://exemple.com/ma-photo.jpg"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Utilisez une URL d'image (JPG, PNG). Recommandé : 150x150px
+                  </p>
+                </div>
+
+                {/* Photos prédéfinies */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-3">
+                    Ou choisissez une photo prédéfinie :
+                  </label>
+                  <div className="grid grid-cols-4 gap-3">
+                    {[
+                      "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/1542085/pexels-photo-1542085.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/3778876/pexels-photo-3778876.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/3889855/pexels-photo-3889855.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/1516680/pexels-photo-1516680.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
+                      "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1"
+                    ].map((url, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setNewProfilePic(url)}
+                        className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all ${
+                          (newProfilePic || data.settings.profilePicture) === url
+                            ? "border-blue-500 ring-2 ring-blue-200"
+                            : "border-gray-300 hover:border-blue-400"
+                        }`}
+                      >
+                        <img
+                          src={url}
+                          alt={`Avatar ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Boutons d'action */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleUpdateProfile}
+                    className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 flex items-center justify-center gap-2 font-medium"
+                  >
+                    <Camera size={20} />
+                    Mettre à jour le profil
+                  </button>
+                  <button
+                    onClick={() => {
+                      setNewProfilePic("");
+                      setNewDisplayName(data.settings.displayName);
+                    }}
+                    className="px-4 py-3 border border-gray-300 rounded-md hover:bg-gray-50 text-gray-700"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );
