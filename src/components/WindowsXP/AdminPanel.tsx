@@ -15,6 +15,10 @@ import {
   Folder,
   Download,
   RefreshCw,
+  MessageCircle,
+  Star,
+  Check,
+  AlertCircle,
 } from "lucide-react";
 import {
   useRecycleBin,
