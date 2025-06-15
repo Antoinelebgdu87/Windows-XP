@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X, Minus, Square } from "lucide-react";
+import { useXPSounds } from "../../hooks/useXPSounds";
 
 interface WindowProps {
   title: string;
@@ -29,6 +30,24 @@ const Window: React.FC<WindowProps> = ({
 }) => {
   const [position, setPosition] = useState(initialPosition);
   const [isDragging, setIsDragging] = useState(false);
+  const { playWindowOpen, playWindowClose, playClickSound } = useXPSounds();
+
+  // Play window open sound on mount
+  useEffect(() => {
+    playWindowOpen();
+  }, [playWindowOpen]);
+
+  const handleClose = () => {
+    playWindowClose();
+    if (onClose) {
+      setTimeout(() => onClose(), 200); // Delay to let sound play
+    }
+  };
+
+  const handleMinimize = () => {
+    playClickSound();
+    if (onMinimize) onMinimize();
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (onFocus) onFocus();
@@ -83,13 +102,19 @@ const Window: React.FC<WindowProps> = ({
               className="xp-control-button"
               onClick={(e) => {
                 e.stopPropagation();
-                onMinimize();
+                handleMinimize();
               }}
             >
               <Minus size={8} />
             </button>
           )}
-          <button className="xp-control-button">
+          <button
+            className="xp-control-button"
+            onClick={(e) => {
+              e.stopPropagation();
+              playClickSound();
+            }}
+          >
             <Square size={6} />
           </button>
           {onClose && (
@@ -97,7 +122,7 @@ const Window: React.FC<WindowProps> = ({
               className="xp-control-button"
               onClick={(e) => {
                 e.stopPropagation();
-                onClose();
+                handleClose();
               }}
             >
               <X size={8} />
