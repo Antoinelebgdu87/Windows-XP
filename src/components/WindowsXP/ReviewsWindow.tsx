@@ -18,7 +18,9 @@ interface ReviewsWindowProps {
 
 const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
   const { data, saveData } = useSaveData();
-  const [activeTab, setActiveTab] = useState<"reviews" | "add">("reviews");
+  const [activeTab, setActiveTab] = useState<"reviews" | "add" | "profile">(
+    "reviews",
+  );
   const [rating, setRating] = useState(5);
   const [hoveredRating, setHoveredRating] = useState(0);
   const [newReview, setNewReview] = useState({
@@ -28,6 +30,10 @@ const ReviewsWindow: React.FC<ReviewsWindowProps> = ({ onClose }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [newProfilePic, setNewProfilePic] = useState("");
+  const [newDisplayName, setNewDisplayName] = useState(
+    data.settings.displayName,
+  );
 
   // Filtrer les avis approuvés pour l'affichage public
   const approvedReviews = data.reviews.filter(
