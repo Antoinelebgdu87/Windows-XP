@@ -4,16 +4,12 @@ import { Star, Award, Clock, Users } from "lucide-react";
 export const PortfolioContent = () => (
   <div className="xp-text space-y-4">
     <div className="flex items-center space-x-3 mb-4">
-      <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-        <span className="text-white text-2xl font-bold">MV</span>
+      <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+        <span className="text-white text-xl font-bold">LVT</span>
       </div>
       <div>
-        <h2 className="text-xl font-bold text-blue-800">
-          Monteur Vidéo Professionnel
-        </h2>
-        <p className="text-sm text-gray-600">
-          Créateur de contenus audiovisuels
-        </p>
+        <h2 className="text-xl font-bold text-blue-800">lino.lvt</h2>
+        <p className="text-sm text-gray-600">Monteur Vidéo Roblox Spécialisé</p>
       </div>
     </div>
 
@@ -22,66 +18,64 @@ export const PortfolioContent = () => (
         <div className="flex items-center justify-center mb-1">
           <Clock size={16} className="text-blue-600" />
         </div>
-        <div className="font-bold text-lg">5+</div>
+        <div className="font-bold text-lg">2</div>
         <div className="text-xs">Années d'expérience</div>
       </div>
       <div className="xp-panel text-center">
         <div className="flex items-center justify-center mb-1">
           <Users size={16} className="text-green-600" />
         </div>
-        <div className="font-bold text-lg">150+</div>
-        <div className="text-xs">Projets réalisés</div>
+        <div className="font-bold text-lg">+1M</div>
+        <div className="text-xs">Vues générées</div>
       </div>
     </div>
 
     <div className="space-y-3">
       <p className="text-sm leading-relaxed">
-        Passionné par la création audiovisuelle depuis plus de 5 ans, je
-        transforme vos idées en histoires captivantes. Ma spécialité ? Donner
-        vie à vos projets avec créativité et précision technique.
+        Créateur de contenu spécialisé dans l'univers Roblox avec plus d'1 million de vues
+        générées. En 2 ans d'expérience, j'ai développé une expertise unique dans le montage
+        vidéo gaming, particulièrement sur la plateforme Roblox.
       </p>
-
       <div className="xp-panel">
         <h3 className="font-bold mb-2 flex items-center">
           <Award size={14} className="mr-2 text-yellow-600" />
-          Mes spécialisations
+          Mes spécialisations Roblox
         </h3>
         <div className="grid grid-cols-1 gap-2 text-sm">
           <div className="flex items-center">
-            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-            <span>Montage publicitaire et commercial</span>
+            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+            <span>Gameplay & Tutoriels Roblox</span>
           </div>
           <div className="flex items-center">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-            <span>Clips musicaux et artistiques</span>
+            <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+            <span>Montage gaming dynamique</span>
           </div>
           <div className="flex items-center">
             <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-            <span>Documentaires et reportages</span>
+            <span>Contenu viral pour réseaux sociaux</span>
           </div>
           <div className="flex items-center">
             <div className="w-2 h-2 bg-purple-500 rounded-full mr-2"></div>
-            <span>Contenu pour réseaux sociaux</span>
+            <span>Storytelling gaming</span>
           </div>
           <div className="flex items-center">
             <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
-            <span>Étalonnage et post-production</span>
+            <span>Effets visuels et transitions</span>
           </div>
         </div>
       </div>
 
-      <div className="xp-panel bg-gradient-to-r from-blue-50 to-purple-50">
+      <div className="xp-panel bg-gradient-to-r from-green-50 to-blue-50">
         <div className="flex items-center mb-2">
           <Star size={14} className="text-yellow-500 mr-1" />
-          <span className="font-bold text-sm">Ma philosophie</span>
+          <span className="font-bold text-sm">Ma spécialité</span>
         </div>
         <p className="text-sm italic">
-          "Chaque projet est unique et mérite une approche créative
-          personnalisée. Mon objectif est de dépasser vos attentes en alliant
-          technique de pointe et vision artistique."
+          "Expert en montage vidéo Roblox, je crée du contenu viral qui engage
+          et divertit. Avec +1M de vues générées, je maîtrise les codes qui
+          fonctionnent dans l'univers gaming."
         </p>
       </div>
-
       <div className="text-center">
         <button className="xp-button px-4 py-2 font-bold">
           Découvrir mes réalisations
@@ -92,6 +86,77 @@ export const PortfolioContent = () => (
 );
 
 export const VideosContent = () => (
+  <div className="xp-text space-y-4">
+    <h2 className="text-lg font-bold text-red-800 flex items-center">
+      <span className="mr-2">🎮</span>
+      Portfolio Roblox
+    </h2>
+
+    <div className="xp-panel bg-green-50">
+      <div className="text-sm flex items-center">
+        <span className="mr-2">🔥</span>
+        <strong>+1 Million de vues générées :</strong>
+        <button className="xp-button ml-2 text-xs">Voir showreel</button>
+      </div>
+    </div>
+
+    <div className="space-y-3">
+      {[
+        {
+          title: "Roblox Brookhaven RP - Best Moments",
+          duration: "8m12s",
+          year: "2024",
+          category: "Gaming",
+          color: "bg-green-100",
+          description: "Compilation virale - 250K vues",
+          views: "250K"
+        },
+        {
+          title: "Adopt Me Trading Tips & Tricks",
+          duration: "5m34s",
+          year: "2024",
+          category: "Tutorial",
+          color: "bg-blue-100",
+          description: "Guide complet pour traders débutants",
+          views: "180K"
+        },
+        {
+          title: "Roblox Horror Games Marathon",
+          duration: "12m45s",
+          year: "2024",
+          category: "Horror",
+          color: "bg-red-100",
+          description: "Compilation frissons garantis",
+          views: "320K"
+        },
+        {
+          title: "Building Challenge Mega Build",
+          duration: "6m18s",
+          year: "2024",
+          category: "Building",
+          color: "bg-purple-100",
+          description: "Construction créative en accéléré",
+          views: "190K"
+        },
+        {
+          title: "Roblox Funny Moments #15",
+          duration: "4m56s",
+          year: "2024",
+          category: "Comedy",
+          color: "bg-yellow-100",
+          description: "Compilation rires et fails épiques",
+          views: "275K"
+        },
+        {
+          title: "New Roblox Games to Try",
+          duration: "7m23s",
+          year: "2024",
+          category: "Review",
+          color: "bg-orange-100",
+          description: "Test et avis sur les nouveautés",
+          views: "165K"
+        },
+      ].map((video, index) => (
   <div className="xp-text space-y-4">
     <h2 className="text-lg font-bold text-red-800 flex items-center">
       <span className="mr-2">🎬</span>
@@ -170,7 +235,7 @@ export const VideosContent = () => (
           <div className="text-xs text-gray-600 mb-2">{video.description}</div>
           <div className="flex justify-between items-center">
             <div className="text-xs text-gray-500">
-              {video.duration} • {video.year}
+              {video.duration} • {video.views} vues
             </div>
             <button className="xp-button text-xs">▶ Voir</button>
           </div>
@@ -292,9 +357,7 @@ export const ContactContent = () => (
     <div className="xp-panel bg-green-50">
       <div className="flex items-center justify-center mb-3">
         <div className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-        <span className="font-bold text-green-700">
-          Disponible pour nouveaux projets
-        </span>
+        <span className="font-bold text-green-700">Disponible pour nouveaux projets Roblox</span>
       </div>
     </div>
 
@@ -305,43 +368,44 @@ export const ContactContent = () => (
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <span>📧</span>
-              <span>contact@monteurvideo.pro</span>
+              <span>linolvt.pro@gmail.com</span>
             </div>
             <button className="xp-button text-xs">Copier</button>
           </div>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <span>📱</span>
-              <span>+33 6 12 34 56 78</span>
-            </div>
-            <button className="xp-button text-xs">Appeler</button>
+          <div className="flex items-center space-x-2">
+            <span>🎮</span>
+            <span>Spécialiste Roblox Gaming</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span>📍</span>
-            <span>Paris & Île-de-France</span>
+            <span>📊</span>
+            <span>+1M vues générées</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span>🌐</span>
-            <span>Interventions France entière</span>
+            <span>⏱️</span>
+            <span>2 ans d'expérience</span>
           </div>
         </div>
       </div>
-
       <div className="grid grid-cols-2 gap-3">
         <div className="xp-panel">
           <h3 className="font-bold mb-2 text-purple-700">🌐 Réseaux</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between items-center">
-              <span>LinkedIn Pro</span>
-              <button className="xp-button text-xs">Visiter</button>
+              <span>X (Twitter)</span>
+              <button
+                className="xp-button text-xs"
+                onClick={() => window.open('https://x.com/LinolvtPro', '_blank')}
+              >
+                Suivre
+              </button>
             </div>
             <div className="flex justify-between items-center">
-              <span>Instagram</span>
-              <button className="xp-button text-xs">Suivre</button>
+              <span>@LinolvtPro</span>
+              <button className="xp-button text-xs">Voir profil</button>
             </div>
             <div className="flex justify-between items-center">
-              <span>YouTube</span>
-              <button className="xp-button text-xs">S'abonner</button>
+              <span>Roblox Gaming</span>
+              <button className="xp-button text-xs">Contenu</button>
             </div>
           </div>
         </div>
@@ -365,19 +429,19 @@ export const ContactContent = () => (
         </div>
       </div>
 
-      <div className="xp-panel bg-gradient-to-r from-yellow-50 to-orange-50">
-        <h3 className="font-bold mb-2">💰 Tarification</h3>
+      <div className="xp-panel bg-gradient-to-r from-green-50 to-blue-50">
+        <h3 className="font-bold mb-2">💰 Services Roblox</h3>
         <div className="text-sm space-y-2">
           <div className="flex justify-between">
-            <span>Montage simple</span>
-            <span className="font-bold">À partir de 200€/jour</span>
+            <span>Montage Gaming</span>
+            <span className="font-bold">Prix sur demande</span>
           </div>
           <div className="flex justify-between">
-            <span>Projet complet</span>
-            <span className="font-bold">Devis personnalisé</span>
+            <span>Contenu viral</span>
+            <span className="font-bold">Expertise +1M vues</span>
           </div>
           <div className="text-xs text-gray-600 text-center mt-2">
-            Première consultation gratuite • Devis sans engagement
+            Portfolio Roblox • Résultats prouvés • Contact direct
           </div>
         </div>
       </div>
