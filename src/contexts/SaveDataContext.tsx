@@ -81,7 +81,7 @@ const defaultData: SavedData = {
   videos: [
     {
       id: "1",
-      title: "Brookhaven RP - Ma maison de rêve",
+      title: "Brookhaven RP - Ma maison de r��ve",
       description:
         "Construction et décoration de ma maison parfaite dans Brookhaven RP",
       category: "Building",
@@ -207,7 +207,7 @@ const defaultData: SavedData = {
     syncInterval: 30000, // 30 secondes
     profilePicture:
       "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1",
-    displayName: "Lino LVT",
+    displayName: "Linolvt",
   },
   lastSaved: new Date().toISOString(),
   version: "1.0.0",
