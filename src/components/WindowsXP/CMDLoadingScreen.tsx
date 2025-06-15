@@ -98,38 +98,7 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
     return () => clearInterval(cursorTimer);
   }, []);
 
-  // Sons de frappe (simulés)
-  useEffect(() => {
-    if (currentChar > 0 && currentLineIndex < cmdLines.length) {
-      try {
-        // Son de frappe de clavier
-        const audioContext = new (window.AudioContext ||
-          (window as any).webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
-        oscillator.frequency.setValueAtTime(
-          800 + Math.random() * 200,
-          audioContext.currentTime,
-        );
-        oscillator.type = "square";
-
-        gainNode.gain.setValueAtTime(0.02, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(
-          0.001,
-          audioContext.currentTime + 0.1,
-        );
-
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.1);
-      } catch (error) {
-        // Audio non supporté, ignorer silencieusement
-      }
-    }
-  }, [currentChar, currentLineIndex]);
+  // Sons désactivés - plus de bruit pendant le chargement
 
   const getLineColor = (line: string | undefined): string => {
     if (!line) return "#00ff00";
@@ -228,9 +197,22 @@ const CMDLoadingScreen: React.FC<CMDLoadingScreenProps> = ({
         }}
       />
 
-      {/* Informations système en bas */}
-      <div className="absolute bottom-4 right-4 text-green-600 text-xs">
-        {isComplete ? "Système prêt" : "Initialisation..."}
+      {/* Informations système et bouton Skip */}
+      <div className="absolute bottom-4 right-4 flex items-center space-x-4">
+        <div className="text-green-600 text-xs">
+          {isComplete ? "Système prêt" : "Initialisation..."}
+        </div>
+        {!isComplete && (
+          <button
+            onClick={() => {
+              setIsComplete(true);
+              onLoadingComplete();
+            }}
+            className="bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded text-xs font-bold border border-green-500 transition-colors"
+          >
+            SKIP ⏭️
+          </button>
+        )}
       </div>
     </motion.div>
   );
