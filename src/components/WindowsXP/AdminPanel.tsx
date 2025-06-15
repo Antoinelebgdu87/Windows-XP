@@ -367,6 +367,343 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
                 </table>
               </div>
             </div>
+
+            {/* Create/Edit Video Modal */}
+            {(isCreating || editingVideo) && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg p-6 w-[600px] max-h-[90vh] overflow-y-auto">
+                  <h3 className="text-lg font-bold mb-4">
+                    {isCreating ? "Nouvelle Vidéo" : "Modifier la Vidéo"}
+                  </h3>
+
+                  <div className="space-y-4">
+                    {/* Titre */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Titre de la vidéo *
+                      </label>
+                      <input
+                        type="text"
+                        value={
+                          isCreating
+                            ? newVideo.title || ""
+                            : editingVideo?.title || ""
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({ ...newVideo, title: e.target.value });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              title: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                        placeholder="Ex: Motion Design - Logo Révolutionnaire"
+                      />
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Description *
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={
+                          isCreating
+                            ? newVideo.description || ""
+                            : editingVideo?.description || ""
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({
+                              ...newVideo,
+                              description: e.target.value,
+                            });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              description: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                        placeholder="Décrivez votre création, techniques utilisées, résultats obtenus..."
+                      />
+                    </div>
+
+                    {/* Lien Vidéo */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Lien YouTube/Vimeo *
+                      </label>
+                      <input
+                        type="url"
+                        value={
+                          isCreating
+                            ? newVideo.url || ""
+                            : editingVideo?.url || ""
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({ ...newVideo, url: e.target.value });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              url: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                      />
+                    </div>
+
+                    {/* Catégorie */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Type de Création *
+                      </label>
+                      <select
+                        value={
+                          isCreating
+                            ? newVideo.category || "Motion Design"
+                            : editingVideo?.category || "Motion Design"
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({
+                              ...newVideo,
+                              category: e.target.value,
+                            });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              category: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="Motion Design">Motion Design</option>
+                        <option value="Gaming">Gaming/Roblox</option>
+                        <option value="Montage Vidéo">Montage Vidéo</option>
+                        <option value="Animation">Animation</option>
+                        <option value="Tutorial">Tutorial</option>
+                        <option value="Commercial">Commercial</option>
+                        <option value="Music Video">Clip Musical</option>
+                        <option value="VFX">Effets Spéciaux</option>
+                        <option value="Documentary">Documentaire</option>
+                        <option value="Social Media">Réseaux Sociaux</option>
+                      </select>
+                    </div>
+
+                    {/* Thumbnail */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Miniature (URL)
+                      </label>
+                      <input
+                        type="url"
+                        value={
+                          isCreating
+                            ? newVideo.thumbnail || ""
+                            : editingVideo?.thumbnail || ""
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({
+                              ...newVideo,
+                              thumbnail: e.target.value,
+                            });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              thumbnail: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                        placeholder="https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Pour YouTube: remplacez VIDEO_ID par l'ID de votre vidéo
+                      </p>
+                    </div>
+
+                    {/* Statistiques */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-1">
+                          Vues
+                        </label>
+                        <input
+                          type="number"
+                          value={
+                            isCreating
+                              ? newVideo.views || 0
+                              : editingVideo?.views || 0
+                          }
+                          onChange={(e) => {
+                            const views = parseInt(e.target.value) || 0;
+                            if (isCreating) {
+                              setNewVideo({ ...newVideo, views });
+                            } else if (editingVideo) {
+                              setEditingVideo({ ...editingVideo, views });
+                            }
+                          }}
+                          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="0"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1">
+                          Likes
+                        </label>
+                        <input
+                          type="number"
+                          value={
+                            isCreating
+                              ? newVideo.likes || 0
+                              : editingVideo?.likes || 0
+                          }
+                          onChange={(e) => {
+                            const likes = parseInt(e.target.value) || 0;
+                            if (isCreating) {
+                              setNewVideo({ ...newVideo, likes });
+                            } else if (editingVideo) {
+                              setEditingVideo({ ...editingVideo, likes });
+                            }
+                          }}
+                          className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                          placeholder="0"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Date */}
+                    <div>
+                      <label className="block text-sm font-medium mb-1">
+                        Date de Publication
+                      </label>
+                      <input
+                        type="date"
+                        value={
+                          isCreating
+                            ? newVideo.date ||
+                              new Date().toISOString().split("T")[0]
+                            : editingVideo?.date || ""
+                        }
+                        onChange={(e) => {
+                          if (isCreating) {
+                            setNewVideo({ ...newVideo, date: e.target.value });
+                          } else if (editingVideo) {
+                            setEditingVideo({
+                              ...editingVideo,
+                              date: e.target.value,
+                            });
+                          }
+                        }}
+                        className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    {/* Preview */}
+                    {((isCreating && newVideo.url) ||
+                      (editingVideo && editingVideo.url)) && (
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          Aperçu
+                        </label>
+                        <div className="border rounded p-3 bg-gray-50">
+                          <div className="flex items-start gap-3">
+                            {((isCreating && newVideo.thumbnail) ||
+                              (editingVideo && editingVideo.thumbnail)) && (
+                              <img
+                                src={
+                                  isCreating
+                                    ? newVideo.thumbnail
+                                    : editingVideo?.thumbnail
+                                }
+                                alt="Miniature"
+                                className="w-20 h-12 object-cover rounded"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display =
+                                    "none";
+                                }}
+                              />
+                            )}
+                            <div className="flex-1">
+                              <h4 className="font-medium text-sm">
+                                {isCreating
+                                  ? newVideo.title
+                                  : editingVideo?.title}
+                              </h4>
+                              <p className="text-xs text-gray-600 mt-1">
+                                {isCreating
+                                  ? newVideo.description
+                                  : editingVideo?.description}
+                              </p>
+                              <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                                <span>
+                                  {isCreating
+                                    ? newVideo.views?.toLocaleString()
+                                    : editingVideo?.views?.toLocaleString()}{" "}
+                                  vues
+                                </span>
+                                <span>
+                                  {isCreating
+                                    ? newVideo.likes?.toLocaleString()
+                                    : editingVideo?.likes?.toLocaleString()}{" "}
+                                  likes
+                                </span>
+                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                  {isCreating
+                                    ? newVideo.category
+                                    : editingVideo?.category}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex space-x-2 mt-6 pt-4 border-t">
+                    <button
+                      onClick={isCreating ? handleCreateVideo : handleSaveEdit}
+                      className="flex-1 bg-blue-600 text-white p-3 rounded hover:bg-blue-700 flex items-center justify-center gap-2"
+                    >
+                      <Save size={16} />
+                      {isCreating ? "Créer la Vidéo" : "Sauvegarder"}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsCreating(false);
+                        setEditingVideo(null);
+                        setNewVideo({
+                          title: "",
+                          description: "",
+                          category: "Motion Design",
+                          thumbnail: "",
+                          url: "",
+                          views: 0,
+                          likes: 0,
+                          date: new Date().toISOString().split("T")[0],
+                        });
+                      }}
+                      className="px-6 bg-gray-300 p-3 rounded hover:bg-gray-400"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
