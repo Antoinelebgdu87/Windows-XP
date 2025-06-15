@@ -52,7 +52,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ onClose }) => {
   const [editingVideo, setEditingVideo] = useState<VideoData | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "videos" | "analytics" | "recycle" | "settings"
+    "videos" | "analytics" | "reviews" | "recycle" | "settings"
   >("videos");
 
   const [newVideo, setNewVideo] = useState<Partial<VideoData>>({
