@@ -81,7 +81,7 @@ const defaultData: SavedData = {
   videos: [
     {
       id: "1",
-      title: "Brookhaven RP - Ma maison de r��ve",
+      title: "Brookhaven RP - Ma maison de rêve",
       description:
         "Construction et décoration de ma maison parfaite dans Brookhaven RP",
       category: "Building",
@@ -131,7 +131,7 @@ const defaultData: SavedData = {
       name: "admin_credentials.txt",
       type: "text",
       content:
-        "Admin: Bakadu36\nPassword: FakePassword123\nNote: These are fake credentials for demo purposes.",
+        "Admin12: Baka32\nPassword: FakePassword123\nNote: These are fake credentials for demo purposes.",
       dateDeleted: "2025-01-18",
     },
     {
