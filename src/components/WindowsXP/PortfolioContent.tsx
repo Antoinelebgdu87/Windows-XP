@@ -8,7 +8,7 @@ export const PortfolioContent = () => (
         <span className="text-white text-xl font-bold">LVT</span>
       </div>
       <div>
-        <h2 className="text-xl font-bold text-blue-800">lino.lvt</h2>
+        <h2 className="text-xl font-bold text-blue-800">Linolvt</h2>
         <p className="text-sm text-gray-600">Monteur Vidéo Roblox Spécialisé</p>
       </div>
     </div>
@@ -183,7 +183,7 @@ export const VideosContent = () => (
 
     <div className="xp-panel bg-gradient-to-r from-blue-50 to-green-50">
       <div className="text-sm text-center">
-        <strong>�� Projets sur mesure</strong>
+        <strong>🎯 Projets sur mesure</strong>
         <br />
         <span className="text-xs">
           Vous avez un projet spécifique Roblox ? Contactez-moi pour un devis
